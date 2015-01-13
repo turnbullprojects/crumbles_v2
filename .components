@@ -1,0 +1,9 @@
+---
+:orm: activerecord
+:test: rspec
+:mock: none
+:script: none
+:renderer: haml
+:stylesheet: sass
+:namespace: CrumblesV2
+:migration_format: number

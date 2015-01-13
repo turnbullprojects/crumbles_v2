@@ -1,0 +1,27 @@
+ruby '2.1.5'
+source 'https://rubygems.org'
+
+# Server requirements
+gem 'thin' 
+
+# Optional JSON codec (faster performance)
+gem 'oj'
+
+# Project requirements
+gem 'rake'
+gem 'dotenv'
+gem 'foreman'
+
+# Component requirements
+gem 'sass'
+gem 'haml'
+gem 'activerecord', '>= 3.1', :require => 'active_record'
+gem 'pg'
+
+# Test requirements
+gem 'rspec', :group => 'test'
+gem 'rack-test', :require => 'rack/test', :group => 'test'
+
+# Padrino Stable Gem
+gem 'padrino', '0.12.4'
+
