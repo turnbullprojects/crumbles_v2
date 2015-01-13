@@ -12,6 +12,4 @@ RSpec.describe Dictionary do
   end
   
   
-  pending "has multiple entries"
-  pending "has multiple homophones"
 end

@@ -12,6 +12,10 @@ gem 'rake'
 gem 'dotenv'
 gem 'foreman'
 
+# Console
+gem 'pry'
+gem 'racksh'
+
 # Component requirements
 gem 'sass'
 gem 'haml'
