@@ -5,5 +5,5 @@
 :script: none
 :renderer: haml
 :stylesheet: sass
-:namespace: CrumblesV2
+:namespace: Crumbles
 :migration_format: number

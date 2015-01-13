@@ -1,4 +1,4 @@
-module CrumblesV2
+module Crumbles
   class App < Padrino::Application
     register SassInitializer
     use ConnectionPoolManagement
