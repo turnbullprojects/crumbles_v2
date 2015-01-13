@@ -17,6 +17,7 @@ gem 'pry'
 gem 'racksh'
 
 # Component requirements
+gem 'bcrypt'
 gem 'sass'
 gem 'haml'
 gem 'activerecord', '>= 3.1', :require => 'active_record'

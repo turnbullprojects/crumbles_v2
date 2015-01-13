@@ -1,0 +1,10 @@
+%html
+  %head
+    %title Crumbles
+
+  %body
+    %h1 Hello, world
+    %ul
+      - @dictionaries.each do |dict|
+        %li=dict.name
+
