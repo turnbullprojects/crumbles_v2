@@ -21,6 +21,9 @@ gem 'pg'
 # Test requirements
 gem 'rspec', :group => 'test'
 gem 'rack-test', :require => 'rack/test', :group => 'test'
+gem 'factory_girl'
+gem 'database_cleaner', "~> 1.2.0"
+gem 'forgery'
 
 # Padrino Stable Gem
 gem 'padrino', '0.12.4'
