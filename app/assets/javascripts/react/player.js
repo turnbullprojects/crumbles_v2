@@ -32,6 +32,7 @@ var MashupContainer = React.createClass({
   findInDictionary: function(dictionary, word) {
     var entry = dictionary["entries"][word]
     if (entry != undefined) {
+      entry["defined"] = true;
       return entry;
     } else {
       console.log("not in dictionary");
@@ -40,16 +41,18 @@ var MashupContainer = React.createClass({
   },
 
   notInDictionary: function(dictionary) {
-    return dictionary["entries"]["woohoo"];
+    var randomVideo = dictionary["entries"]["duck"];
+    randomVideo["defined"] = false;
+    return randomVideo;
   },
 
   render: function() {
-    var videos = [];
+    var entries = [];
 
     return (
       <div idName="mashup-container">
         <PhraseInput onInput={this.handlePhraseInput} />
-        <Player videos={this.state.phrase} />
+        <Player entries={this.state.phrase} />
       </div>
     );
   }
@@ -125,18 +128,23 @@ var TextBox = React.createClass({
   },
 
   sanitize: function(text) {
-    return text.replace(/[^[\w|\s|'|\?|.|\!|;|:|\-|–]/g,"");
+    var nolines = text.replace(/(\r\n|\n|\r)/gm,"");
+    return nolines.replace(/[^[\w|\s|'|\?|.|\!|;|:|\-|–]/g,"");
   },
 
   handleInput: function(e){
-
     window.clearTimeout(this.state.timeoutId);
 
-    newTimeoutId = window.setTimeout(this.processInput, 1500); 
-
-    this.setState({ timeoutId: newTimeoutId });
+    if (e.which === 13) {
+      // enter pressed, play immediately
+      e.preventDefault();
+      this.processInput();
+    } else {
+      // play when they stop typing
+      newTimeoutId = window.setTimeout(this.processInput, 1500); 
+      this.setState({ timeoutId: newTimeoutId });
+    }
   },
-
   processInput: function(){
     var txt = this.getDOMNode().value;
     var sanitized = this.sanitize(txt);
@@ -162,34 +170,36 @@ var WordCount = React.createClass({
 var Player = React.createClass({
 
   getInitialState: function() {
-    // use loaded variable instead of playlist.length
-    // we async insert to the array at an index
-    // so playlist.length may count nul values 
-    // if the third word loads first you'll get [,,loadedVid]
-    // which is length 3, and not an accurate loaded count
+
     return { 
-      ready: false, 
-      playlist: [], 
-      played: [], 
-      loaded: 0 
+      ready: false,
+      videoPlaylist: [],
+      audioPlaylist: [],
+      videosPlayed: [],
+      audioPlayed: [],
+      loadedVideo: 0,
+      loadedAudio: 0
     };
   },
   
   shouldComponentUpdate: function(nextProps, nextState) {
-    var current = this.props.videos;
-    var next = nextProps.videos;
+    var current = this.props.entries;
+    var next = nextProps.entries;
 
     if (_.isEqual(current, next)) {
-      console.log("videos are the same");
+      console.log("entries are the same");
       return false;
     } else {
-      console.log("videos are not the same");
-      
+      console.log("entries are not the same");
+
       this.setState({
         ready: false,
-        playlist: [],
-        played: [],
-        loaded: 0
+        videoPlaylist: [],
+        audioPlaylist: [],
+        videosPlayed: [],
+        audioPlayed: [],
+        loadedVideo: 0,
+        loadedAudio: 0
       });
       return true;
     }
@@ -199,25 +209,25 @@ var Player = React.createClass({
     console.log("Loading videos...");
 
 
+    var entries = this.props.entries;
 
-    var videos = this.props.videos;
-
-    for(var i=0; i < videos.length; i++) {
-      console.log("    in video load loop, " + i + "/" + videos.length);
-      var video = videos[i];
-      this.getVideo(video["video_url"], i);
+    for(var i=0; i < entries.length; i++) {
+      console.log("    in video load loop, " + i + "/" + entries.length);
+      var entry = entries[i];
+      this.getVideo(entry, i);
     }
   },
 
 
-  getVideo: function(url, i) {
+  getVideo: function(entry, i) {
     // Capture context
     var player = this;
 
     // set up our request
+    var url = entry["video_url"];
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
-    var vidTag = this.getDOMNode();
+    var vidTag = this.refs.video.getDOMNode();
     if(vidTag.canPlayType && vidTag.canPlayType('video/mp4').replace(/no/, '')) {
       xhr.open('GET', url + ".mp4", true);
     } else {
@@ -230,49 +240,74 @@ var Player = React.createClass({
         var myBlob = this.response;
         var vid = (window.webkitURL ? webkitURL : URL).createObjectURL(myBlob);
 
-        var playlist = player.state.playlist;
-        playlist[i] = vid;
+        var videoPlaylist = player.state.videoPlaylist;
+        videoPlaylist[i] = { video: vid, defined: entry["defined"] };
 
-        var loaded = player.state.loaded + 1; 
-        var targetLength = player.props.videos.length;
+        var loadedVideo = player.state.loadedVideo + 1; 
+        var targetLength = player.props.entries.length;
 
-        console.log(loaded + " / " + targetLength + " videos loaded" );
+        console.log(loadedVideo + " / " + targetLength + " entries loaded" );
 
-        if(loaded === targetLength) { 
-          player.setState({ready: true, playlist: playlist, played: [], loaded: loaded });
+        if(loadedVideo === targetLength) { 
+          player.setState({
+            ready: true,
+            videoPlaylist: videoPlaylist,
+            audioPlaylist: player.state.audioPlaylist,
+            videosPlayed: [],
+            audioPlayed: [],
+            loadedVideo: loadedVideo,
+            loadedAudio: player.state.loadedAudio
+          });
           player.playMashup();
 
-        } else if (loaded < targetLength) {
-          player.setState({ready: false, playlist: playlist, played: [], loaded: loaded });
+        } else if (loadedVideo < targetLength) {
+          player.setState({
+            ready: false,
+            videoPlaylist: videoPlaylist,
+            audioPlaylist: player.state.audioPlaylist,
+            videosPlayed: [],
+            audioPlayed: [],
+            loadedVideo: loadedVideo,
+            loadedAudio: player.state.loadedAudio
+          });
         } else { 
-          console.log("loaded is huge");
+          console.log("loaded is toooooo big");
         }
        }
     }
     xhr.send();
   },
 
+  getTTSAudio: function(entry) {
+    var word = encodeURIComponent(entry["word"]);
+    var url = "http://translate.google.com/translate_tts?ie=UTF-8&tl=en-us&q=" + word;
+    
+  },
   playMashup: function() {
     var player = this;
-    var playlist = player.state.playlist;
-    var played = player.state.played;
+    var videoPlaylist = player.state.videoPlaylist;
+    var videosPlayed = player.state.videosPlayed;
 
-    if (playlist.length > 0) {
+    if (videoPlaylist.length > 0) {
 
       // Get first video and move it to played
-      video = playlist.shift();
-      played.push(video);
+      current = videoPlaylist.shift();
+      videosPlayed.push(entry);
 
       this.setState({
-        ready: true, 
-        playlist: playlist, 
-        played: played, 
-        loaded: this.state.loaded 
+        ready: true,
+        videoPlaylist: videoPlaylist,
+        audioPlaylist: this.state.audioPlaylist,
+        videosPlayed: videosPlayed,
+        audioPlayed: this.state.audioPlayed,
+        loadedVideo: this.state.loadedVideo,
+        loadedAudio: this.state.loadedAudio
       });
 
       // Set new source
-      vidTag = player.getDOMNode();
-      vidTag.src = video;
+      vidTag = player.refs.video.getDOMNode();
+      vidTag.src = current.video;
+      vidTag.muted = !current.defined;
 
       // Bind to play next after this has ended
       var $video = $('#' + vidTag.id);
@@ -292,7 +327,10 @@ var Player = React.createClass({
   render: function() {
     this.preload();
     return (
-      <video type='video/mp4' controls id='master-vid'></video>
+      <div idName="player">
+        <video ref='video' type='video/mp4' controls id='master-vid'></video>
+        <audio ref="audio"></audio>
+      </div>
     );
   }
 });
