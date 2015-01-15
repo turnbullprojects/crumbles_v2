@@ -8,6 +8,8 @@ require File.expand_path("../config/boot.rb", __FILE__)
 
 map '/assets' do
   run Padrino::Assets.environment
+
 end
+Sprockets.append_path('/dictionaries/')
 
 run Padrino.application
