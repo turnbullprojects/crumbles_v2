@@ -6,5 +6,9 @@ Crumbles::App.controllers :main do
       render "index"
     end
 
+    get :react, map: "/react" do
+      render "react"
+    end
+
 end
 
