@@ -4,6 +4,8 @@ module Crumbles
     use ConnectionPoolManagement
     register Padrino::Mailer
     register Padrino::Helpers
+    register Padrino::Assets
+
 
     enable :sessions
 

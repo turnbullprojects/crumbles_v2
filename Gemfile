@@ -22,6 +22,7 @@ gem 'sass'
 gem 'haml'
 gem 'activerecord', '>= 3.1', :require => 'active_record'
 gem 'pg'
+gem 'padrino-assets'
 
 # Test requirements
 gem 'rspec', :group => 'test'
