@@ -1,0 +1,448 @@
+@import "normalize";
+@import "partials/base";
+@import "partials/buttons";
+@import "partials/variables";
+@import "partials/typography";
+
+html { height: 100%; }
+body {
+  color: $dark-grey;
+  min-height: 100%;
+}
+
+.clear {
+  clear: both;
+}
+
+%centered {
+  margin: {
+    left: auto;
+    right: auto;
+  }
+  width: $width;
+}
+
+%column {
+  position: absolute;
+  overflow: auto;
+  top: 0;
+  bottom: 0;
+}
+
+// Logo
+.header {
+  position: fixed;
+  left: 20px;
+  top: 8px;
+  z-index: 1000;
+}
+
+h1.crumbles {
+  height: 46px;
+  text-indent: -9999em;
+  background: {
+    image: url(logo.png);
+    position: center 0;
+    repeat: no-repeat;
+  }
+  margin-bottom: 10px;
+}
+
+.thirtylabs {
+  @extend %centered;
+  display: block;
+  width: 185px;
+  margin-bottom: 25px;
+  img {
+    width: 120px;
+    height: auto;
+    cursor: pointer;
+  }
+  p {
+    margin: 0;
+    font-style: italic;
+  }
+}
+
+.content {
+  @extend %column;
+  padding: 45px;
+  left: 0; right: $dictionary-width;
+  z-index: 2;
+}
+
+@media (max-width: 600px) {
+  .content {
+    padding: 10px;
+    right: 0;
+  }
+  p {
+    font: {
+      weight: 100;
+      size: 18px;
+    }
+  }
+  h2 {
+    font: {
+      weight: 500;
+      size: 22px;
+    }
+  }
+}
+
+button {
+  border: none;
+  &:active, &:focus { outline: none; }
+}
+
+// Word input
+#mashup-input {
+  border-radius: .33em;
+  @extend %centered;
+  @include box-shadow(inset 0 0 5px rgba(black, .2));
+  background-color: $light-grey;
+  font-size: 24px;
+  line-height: 1.2;
+  min-height: 3.1em;
+  padding: .35em .6em;
+  text-align: left;
+
+  &:focus { outline: none; }
+}
+.invalid { color: $red; }
+
+// Words left
+#words-left {
+  @extend %centered;
+  color: $grey;
+  font: {
+    size: 14px;
+    style: italic;
+  }
+  text: {
+    align: right;
+    transform: uppercase;
+  }
+}
+
+.dictionaryContainer {
+  @extend %column;
+  right: 0px;
+  width: $dictionary-offset;
+  max-height: 100%;
+  z-index: 1;
+}
+
+#dictionarySelectionContainer {
+  position: fixed;
+  height: 80px;
+  width: $dictionary-width;
+  top: 0;
+  right: 0;
+  background-color: $dark-green;
+  z-index: 10;
+  color: white;
+  p {
+    margin-bottom: 8px;
+  }
+  select {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    background-color: $darker-green;
+    width: $dictionary-width - 20px;
+    padding: 1px 11px;
+    font-size: 18px;
+    -webkit-appearance: none;
+  }
+  &:after {
+    content: "▼";
+    position: relative;
+    font-size: 12px;
+    right: 20px;
+    margin-right: -12px;
+    pointer-events: none;
+  }
+}
+
+// Dictionary buttons
+#dictionary {
+  background-color: $green;
+  @include background-image(
+    linear-gradient(left, shade($green, 10%), $green 5px)
+  );
+  font-weight: 100;
+  padding: 35px 0;
+  position: absolute;
+  top: 80px;
+  right: 0px;
+  width: $dictionary-width;
+
+  button.insert-word {
+    background-color: $green;
+    @include background-image(
+      linear-gradient(left, shade($green, 10%), $green 5px)
+    );
+    border: none;
+    color: white;
+    display: block;
+    font-weight: 100;
+    padding: 3px 45px;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+      @include background-image(
+        linear-gradient(left, shade($dark-green, 10%), $dark-green 5px)
+      );
+    }
+  }
+}
+.preview-image {
+  $padding: 6px;
+  $width: 192px;
+  $height: 108px;
+  background: {
+    color: #e6e6e6;
+    position: $padding $padding;
+    repeat: no-repeat;
+    size: $width $height;
+  }
+  display: none;
+  position: absolute;
+  z-index: 1;
+  right: 100%;
+  margin-right: 20px;
+  margin-top: -($height / 2) + ($padding * 2);
+  width: 2 * $padding + $width;
+  height: 2 * $padding + $height;
+
+  img { display: block; }
+
+  &:after {
+    $triangle-size: 13px;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: $triangle-size solid transparent;
+    border-bottom: $triangle-size solid transparent;
+    border-left: $triangle-size solid #e6e6e6;
+    position: absolute;
+    top: 50%; left: 100%;
+    margin-top: -15px;
+  }
+
+  .dictionary-button:hover & {
+    display: block;
+  }
+}
+
+#socialTwitter {
+  color: $blue;
+  background-color: white;
+
+  margin-bottom: .5em;
+  line-height: 1;
+
+  .icon, .text {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  font: {
+    size: 23px;
+    weight: 400;
+  }
+
+  .text {
+    padding: .8em 1.5em .7em;
+    width: 8.25em;
+  }
+
+  .icon {
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    padding-top: .79em;
+  }
+
+  svg {
+    display: inline-block;
+    width: 30px; height: 30px;
+
+    .style0 {
+      @include transition(fill, 0.25s);
+      fill: rgba($blue, 1);
+    }
+  }
+
+  @include keyframes(hover-svg-keyframes) {
+    0%, 100% { width: 30px; height: 30px; }
+    50% { width: 35px; height: 35px; }
+  }
+
+  @include keyframes(hover-icon-keyframes) {
+    0%, 100% { padding-top: .79em; margin-left: 0em; }
+    50% { padding-top: .7em; margin-left: -.2em; }
+  }
+
+  &:hover,
+  &:focus {
+    .icon {
+      @include animation(hover-icon-keyframes .25s linear);
+    }
+    svg {
+      @include animation(hover-svg-keyframes .25s linear);
+    }
+  }
+}
+
+// Media lifecycle
+%dimensions {
+  width: $width;
+  height: $width * .5625;
+}
+#background {
+  @extend %dimensions;
+  background-image: url(video_placeholder.png);
+  display: block;
+  margin: 2em auto;
+}
+@mixin center($size) {
+  margin: {
+    left: -#{$size / 2};
+    top: -#{$size /2 };
+  }
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 1;
+}
+$loader-diameter: .75em;
+@mixin loader-keyframes {
+  0%, 100% {
+    border-radius: $loader-diameter / 2;
+    width: $loader-diameter; height: $loader-diameter;
+    @include center($loader-diameter);
+  }
+  50% {
+    $diameter: $loader-diameter * 6.67;
+    border-radius: ($diameter) / 2;
+    width: $diameter; height: $diameter;
+    @include center($diameter);
+  }
+}
+@-webkit-keyframes loader { @include loader-keyframes; }
+@-moz-keyframes loader { @include loader-keyframes; }
+@-ms-keyframes loader { @include loader-keyframes; }
+@keyframes loader { @include loader-keyframes; }
+.loader, .playButton {
+  display: none;
+}
+.loader {
+  width: $loader-diameter; height: $loader-diameter;
+  background-color: $light-grey;
+  border-radius: $loader-diameter / 2;
+  -webkit-animation: loader 2.17s infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation: loader 2.17s infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation: loader 2.17s infinite;
+  -ms-animation-timing-function: linear;
+  animation: loader 2.17s infinite;
+  animation-timing-function: linear;
+  @include center($loader-diameter);
+
+  [data-state = loading] & { display: block; }
+}
+.playButton {
+  $diameter: 80px;
+  background-color: rgba($light-grey,.85);
+  width: $diameter;
+  height: $diameter;
+  border-radius: $diameter / 2;
+  cursor: pointer;
+  @include center($diameter);
+
+  img {
+    height: $diameter / 2;
+    @include center($diameter / 2);
+    margin-left: -14px;
+  }
+
+  &:hover {
+    background-color: $light-grey;
+    box-shadow: 0 0 6px rgba(black,.33);
+  }
+
+  &:active {
+    box-shadow: inset 0 2px 0 #a2a2a2;
+
+    img {
+      margin-top: -18px;
+    }
+  }
+
+  [data-state = playable] & { display: block; }
+}
+#playbackElements {
+  @extend %dimensions;
+  left: 50%;
+  margin: 2em auto 2em -#{$width / 2};
+  position: absolute;
+  z-index: -1;
+
+  [data-state = playing] & { z-index: 10 }
+}
+.playback-word {
+  background-color: $light-grey;
+  @extend %dimensions;
+  left: 50%;
+  margin-left: -#{$width / 2};
+  display: none;
+  font-size: 3em;
+  line-height: 320px;
+  object-fit: fill;
+  overflow: hidden;
+  position: absolute;
+
+  img {
+    @extend %dimensions;
+    background-color: $light-grey;
+  }
+
+  &[data-state = playing] { display: block; }
+  &[data-state = done] { display: none; }
+}
+
+// Copied confirmation
+.copiedConfirmation {
+  @include transition(opacity, .1s);
+  background-color: $light-grey;
+  display: block;
+  margin: 1em auto 0;
+  opacity: 0;
+  padding: 1em;
+  max-width: 240px;
+  min-height: 85px;
+
+  #copiedUrl {
+    font-size: 20px;
+    line-height: 1;
+    margin-bottom: .5em;
+  }
+
+  &:before {
+    $triangle-size: 13px;
+    bottom: 100%;
+    content: '';
+    left: 50%;
+    margin-left: -$triangle-size/2;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: $triangle-size solid transparent;
+    border-right: $triangle-size solid transparent;
+    border-bottom: $triangle-size solid $light-grey;
+  }
+
+  &.shown { opacity: 1; }
+}

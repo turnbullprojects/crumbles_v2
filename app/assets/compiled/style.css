@@ -1,0 +1,97 @@
+/*
+Error: File to import not found or unreadable: compass/css3.
+       Load path: /Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets
+        on line 1 of /Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets/partials/_base.scss
+        from line 2 of /Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets/style.scss
+
+1: @import "normalize";
+2: @import "partials/base";
+3: @import "partials/buttons";
+4: @import "partials/variables";
+5: @import "partials/typography";
+6: 
+
+Backtrace:
+/Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets/partials/_base.scss:1
+/Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets/style.scss:2
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/import_node.rb:66:in `rescue in import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/import_node.rb:45:in `import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/import_node.rb:28:in `imported_file'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/import_node.rb:37:in `css_import?'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:301:in `visit_import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:79:in `block in with_base'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:115:in `with_frame'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:79:in `with_base'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:158:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:315:in `block (2 levels) in visit_import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:315:in `map'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:315:in `block in visit_import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:88:in `block in with_import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:115:in `with_frame'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:88:in `with_import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:312:in `visit_import'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:79:in `block in with_base'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:115:in `with_frame'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/stack.rb:79:in `with_base'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:158:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:157:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:8:in `visit'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/root_node.rb:36:in `css_tree'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/engine.rb:368:in `_render_with_sourcemap'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/engine.rb:285:in `render_with_sourcemap'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin/compiler.rb:490:in `update_stylesheet'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin/compiler.rb:209:in `each'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin.rb:82:in `update_stylesheets'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin.rb:54:in `check_for_updates'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sass-3.4.9/lib/sass/plugin/rack.rb:51:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/base.rb:49:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/xss_header.rb:18:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/base.rb:49:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/base.rb:49:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/json_csrf.rb:18:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/base.rb:49:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/base.rb:49:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-protection-1.5.3/lib/rack/protection/frame_options.rb:31:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/head.rb:13:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/methodoverride.rb:22:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/padrino-core-0.12.4/lib/padrino-core/reloader/rack.rb:22:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/padrino-core-0.12.4/lib/padrino-core/logger.rb:420:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sinatra-1.4.5/lib/sinatra/show_exceptions.rb:21:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/session/abstract/id.rb:225:in `context'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/session/abstract/id.rb:220:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sinatra-1.4.5/lib/sinatra/base.rb:2014:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sinatra-1.4.5/lib/sinatra/base.rb:1478:in `block in call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sinatra-1.4.5/lib/sinatra/base.rb:1788:in `synchronize'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/sinatra-1.4.5/lib/sinatra/base.rb:1478:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/padrino-core-0.12.4/lib/padrino-core/router.rb:84:in `block in call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/padrino-core-0.12.4/lib/padrino-core/router.rb:75:in `each'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/padrino-core-0.12.4/lib/padrino-core/router.rb:75:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/urlmap.rb:66:in `block in call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/urlmap.rb:50:in `each'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/rack-1.6.0/lib/rack/urlmap.rb:50:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/thin-1.6.3/lib/thin/connection.rb:86:in `block in pre_process'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/thin-1.6.3/lib/thin/connection.rb:84:in `catch'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/thin-1.6.3/lib/thin/connection.rb:84:in `pre_process'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/eventmachine-1.0.4/lib/eventmachine.rb:1046:in `call'
+/Users/air/.rvm/gems/ruby-2.1.5/gems/eventmachine-1.0.4/lib/eventmachine.rb:1046:in `block in spawn_threadpool'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: File to import not found or unreadable: compass/css3.\A        Load path: /Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets\A         on line 1 of /Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets/partials/_base.scss\A         from line 2 of /Users/air/Dropbox/dev/2015/crumbles-v2/app/assets/stylesheets/style.scss\A \A 1: @import \"normalize\";\A 2: @import \"partials/base\";\A 3: @import \"partials/buttons\";\A 4: @import \"partials/variables\";\A 5: @import \"partials/typography\";\A 6: "; }

@@ -1,0 +1,14 @@
+@import "compass/css3";
+
+* {
+  position: relative;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+a { text-decoration: none; }

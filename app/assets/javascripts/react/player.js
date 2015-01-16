@@ -32,7 +32,6 @@ var MashupContainer = React.createClass({
 
         console.log("ENTRY AFTER IF: " + word + " SAVED AS " + entry["word"]);
 
-
         newPhrase.push(entry);
 
         samePhrase = false;
@@ -169,7 +168,7 @@ var TextBox = React.createClass({
     }
   },
   processInput: function(){
-    var txt = this.getDOMNode().value;
+    var txt = this.getDOMNode().innerHTML;
     var sanitized = this.sanitize(txt);
     this.props.onWordInput(sanitized); 
   },
@@ -177,7 +176,7 @@ var TextBox = React.createClass({
   render: function() {
     var txt = this.sanitize(this.props.phrase);
     return (
-      <textarea onKeyUp={this.handleInput}>{txt}</textarea>
+      <div id='mashup-input' contentEditable='true' onKeyUp={this.handleInput}>{txt}</div>
     );
   }
 });
@@ -185,7 +184,9 @@ var TextBox = React.createClass({
 var WordCount = React.createClass({
   render: function() {
     return (
-      <p>{this.props.words} words remaining. </p>
+      <div id="words-left">
+        <b>{this.props.words}</b> | words remaining.
+      </div>
     );
   }
 });
@@ -254,7 +255,7 @@ var Player = React.createClass({
   getAudio: function(entry, i) {
     console.log("getting audio");
     var word = encodeURIComponent(entry["word"]);
-    var url = "./audio/" + word;
+    var url = "./tts/m/" + word;
     this.getMedia(url, entry, i, false);
   },
 
@@ -279,7 +280,6 @@ var Player = React.createClass({
     // set up our request
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
-
     xhr.responseType = 'blob';
     xhr.dataType = 'jsonp';
 

@@ -1,19 +1,18 @@
 Crumbles::App.controllers :main do
-    get :index, map: "/" do
-      @title = "Crumbles"
-      @description = "Crumbles are kinda like reaction GIFs with a way bigger vocabulary... and all you have to do to make one is type."
-      @dictionaries = Dictionary.all
-      render "index"
-    end
+  get :index, map: "/" do
+    @title = "Crumbles"
+    @description = "Crumbles are kinda like reaction GIFs with a way bigger vocabulary... and all you have to do to make one is type."
+    @dictionaries = Dictionary.all
+    render "index"
+  end
 
-    get :react, map: "/react" do
-      render "react"
-    end
+  get :react, map: "/react" do
+    render "react"
+  end
 
-    get :audio, map: "/audio/:word" do
+  get :tts_f, map: "/tts/f/:word" do
     content_type("audio/mp3")
     word = params[:word]
-    puts "hi"
 
     # speech = ""
     # url = "http://tts-api.com/tts.mp3?q=Hello%20World"
@@ -28,7 +27,6 @@ Crumbles::App.controllers :main do
       textlen: "#{word.length}"
     }
     res = HTTParty.get(url, query: options)
-    logger.info res
     if res.code == 200
       speech = Base64.encode64(res.parsed_response)
     end
@@ -36,5 +34,20 @@ Crumbles::App.controllers :main do
   end
 
 
+  get :tts_m, map: "/tts/m/:word" do
+    content_type("audio/mp3")
+    word = params[:word]
+
+    url = "http://tts-api.com/tts.mp3"
+    options = {
+      q: "#{word}"
+    }    
+
+    res = HTTParty.get(url, query: options)
+    if res.code == 200
+      speech = Base64.encode64(res.parsed_response)
+    end
+    return res
+  end
 end
 

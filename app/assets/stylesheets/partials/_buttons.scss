@@ -1,0 +1,193 @@
+@import "partials/variables";
+
+// Buttons Container
+.buttons {
+  width: $width;
+  margin: 0 auto;
+}
+
+// Create link button
+%linkButton {
+  border-radius: .33em;
+  margin: 0 .3em .5em .3em;
+  line-height: 1;
+  color: white;
+
+  .icon, .text {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  font: {
+    size: 20px;
+    weight: 100;
+  }
+
+  .text {
+    padding: .8em .625em .7em;
+    width: 8.25em;
+  }
+
+  .icon {
+    @include border-left-radius(.33em);
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+  }
+
+  svg {
+    display: inline-block;
+
+    .style0 {
+      @include transition(fill, 0.25s);
+      fill: rgba(white, .5);
+    }
+  }
+}
+
+.social {
+  display: inline-block;
+  vertical-align: top;
+}
+
+%socialButton {
+  $button-width: 5.25em;
+  padding: 0 0 0 $button-width;
+  width: $button-width;
+  height: 2.5em;
+
+  &:hover {
+    .style0 {
+      fill: white;
+    }
+  }
+
+  &:active {
+    box-shadow: none;
+
+    .icon {
+      padding-top: .525em;
+    }
+
+    &:after {
+      background-color: rgba(black,.25);
+      border-radius: .33em;
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+    }
+  }
+
+  &:disabled {
+    box-shadow: none;
+
+    &:after {
+      background-color: rgba(black,.25);
+      border-radius: .33em;
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+    }
+  }
+}
+
+#socialTweet {
+  @extend %linkButton;
+  @extend %socialButton;
+  background-color: $blue;
+  box-shadow: inset 0 -.1em 0 rgba(shade($blue, 72%), .5);
+
+  .icon {
+    width: 5.25em;
+    padding-top: .5em;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+#socialFacebook {
+  @extend %linkButton;
+  @extend %socialButton;
+  background-color: $facebook;
+  box-shadow: inset 0 -.1em 0 rgba(shade($facebook, 72%), .5);
+
+  .icon {
+    width: 3em;
+    padding-left: 2.9em;
+    padding-top: .5em;
+  }
+
+  svg {
+    height: 38px;
+  }
+}
+
+.createLinkContainer {
+  display: inline-block;
+}
+
+#createLink {
+  @extend %linkButton;
+  text-transform: uppercase;
+
+  $icon-width: 2.5em;
+  padding: 0 0 0 $icon-width;
+
+  background-color: $purple;
+  box-shadow: inset 0 -.1em 0 rgba(shade($purple, 70%), .5);
+
+  .icon {
+    background-color: rgba(shade($purple, 40%), .5);
+    width: $icon-width;
+    padding-top: .625em;
+  }
+
+  svg {
+    width: 25px; height: 25px;
+  }
+
+  &:hover, &.zeroclipboard-is-hover {
+    .style0 {
+      fill: white;
+    }
+  }
+
+  &:active, &.zeroclipboard-is-active {
+    .icon {
+      padding-top: .675em;
+    }
+    .text {
+      padding: {
+        top: .85em;
+        bottom: .65em;
+      }
+    }
+    box-shadow: none;
+
+    &:after {
+      background-color: rgba(black,.25);
+      border-radius: .33em;
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+    }
+  }
+
+  &:disabled {
+    box-shadow: none;
+
+    &:after {
+      background-color: rgba(black,.25);
+      border-radius: .33em;
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+    }
+  }
+}
