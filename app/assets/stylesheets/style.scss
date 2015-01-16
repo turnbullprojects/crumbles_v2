@@ -4,6 +4,9 @@
 @import "partials/variables";
 @import "partials/typography";
 
+//////////////////////////////////////////////////
+// GLOBAL
+//////////////////////////////////////////////////
 html { height: 100%; }
 body {
   color: $dark-grey;
@@ -29,7 +32,10 @@ body {
   bottom: 0;
 }
 
+//////////////////////////////////////////////////
 // Logo
+//////////////////////////////////////////////////
+
 .header {
   position: fixed;
   left: 20px;
@@ -64,18 +70,7 @@ h1.crumbles {
   }
 }
 
-.content {
-  @extend %column;
-  padding: 45px;
-  left: 0; right: $dictionary-width;
-  z-index: 2;
-}
-
 @media (max-width: 600px) {
-  .content {
-    padding: 10px;
-    right: 0;
-  }
   p {
     font: {
       weight: 100;
@@ -95,7 +90,9 @@ button {
   &:active, &:focus { outline: none; }
 }
 
-// Word input
+//////////////////////////////////////////////////
+// INPUT
+//////////////////////////////////////////////////
 #mashup-input {
   border-radius: .33em;
   @extend %centered;
@@ -125,6 +122,9 @@ button {
   }
 }
 
+//////////////////////////////////////////////////
+// DICTIONARY SIDEBAR
+//////////////////////////////////////////////////
 .dictionaryContainer {
   @extend %column;
   right: 0px;
@@ -236,6 +236,10 @@ button {
     display: block;
   }
 }
+
+//////////////////////////////////////////////////
+// LINKS
+//////////////////////////////////////////////////
 
 #socialTwitter {
   color: $blue;
