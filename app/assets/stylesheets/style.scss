@@ -106,7 +106,7 @@ button {
 
   &:focus { outline: none; }
 }
-.invalid { color: $red; }
+.undefined { color: $red; }
 
 // Words left
 #words-left {
@@ -121,6 +121,12 @@ button {
     transform: uppercase;
   }
 }
+
+//////////////////////////////////////////////////
+// MEDIA
+//////////////////////////////////////////////////
+
+video { width: $width }
 
 //////////////////////////////////////////////////
 // DICTIONARY SIDEBAR

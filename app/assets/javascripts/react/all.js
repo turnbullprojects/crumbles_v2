@@ -1,3 +1,208 @@
+var MashupContainer = React.createClass({
+
+  getInitialState: function() { 
+    return { 
+      phrase: [],
+      audioNeeded: 0
+    } 
+  },
+ 
+  handlePhraseInput: function(words) {
+
+    var newAudioNeeded = 0;
+    var oldPhrase = this.state.phrase;
+    var newPhrase = [];
+    var samePhrase = true;
+
+    for (var i=0; i < words.length; i++) {
+      var word = words[i];
+      if(oldPhrase[i] && word === oldPhrase[i]["word"]) {
+        newPhrase.push(oldPhrase[i]);
+      } 
+      else {
+        var entry = this.findInDictionary(StandardDict, word);
+        if (!entry) {
+          var undedfinedEntry = this.notInDictionary(StandardDict, word);
+          // clone or it will binds all undefined to final word used
+          entry = _.clone(undedfinedEntry); 
+          newAudioNeeded += 1
+        }
+
+
+        newPhrase.push(entry);
+
+        samePhrase = false;
+
+      }
+    };
+    if(!samePhrase) {
+
+      var audioNeeded;
+      if (newAudioNeeded == 0) {
+        audioNeeded = this.state.audioNeeded;
+      } else {
+        audioNeeded = newAudioNeeded;
+      }
+      this.setState({ phrase: newPhrase, audioNeeded: audioNeeded });
+    }
+  },
+
+  findInDictionary: function(dictionary, word) {
+    var entry = dictionary["entries"][word]
+    if (entry != undefined) {
+      entry["defined"] = true;
+      return entry;
+    } else {
+      return false;
+    }
+  },
+
+  notInDictionary: function(dictionary, word) {
+    var randomVideo = dictionary["entries"]["duck"];
+    randomVideo["defined"] = false;
+    randomVideo["word"] = word;
+    return randomVideo;
+  },
+
+  render: function() {
+    var entries = [];
+
+    return (
+      <div idName="mashup-container">
+        <PhraseInput onInput={this.handlePhraseInput} />
+        <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
+      </div>
+    );
+  }
+});
+
+var PhraseInput = React.createClass({
+
+  handleText: function(text) {
+    var words = this.makeWords(text);
+    console.log(words);
+    this.props.onInput(words);
+  },
+
+  makeWords: function(text) {
+    console.log(text);
+    var noPunctuation = text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, " ");
+    var spacedOut = noPunctuation.replace(/[^[a-zA-Z\s]/g, '');
+    var lowercase = spacedOut.toLowerCase();
+    var words = lowercase.split(" ");
+    return _.compact(words);
+  },
+
+  render: function() {
+    return (
+      <TextBox onWordInput={this.handleText} />
+    );
+  }
+});
+
+
+var TextBox = React.createClass({
+  getInitialState: function() {
+    return { timeoutId: 0, wordsLeft: 0 }
+  },
+
+  componentDidMount: function() {
+
+    var text = this.getPhraseFromUrl();
+    var inputNode = this.refs.box.getDOMNode();
+    inputNode.innerHTML = text;
+  },
+
+  getPhraseFromUrl: function() {
+    var params = _.chain( location.search.slice(1).split('&') )
+                  .map(function(item) { if (item) return item.split('='); })
+                  .compact()
+                  .object()
+                  .value();
+    var phrase = params["q"];
+    if (phrase === undefined) {
+      return "Hello and welcome!";
+    } else {
+      return decodeURIComponent(phrase);
+    }
+  },
+
+  updateUrl: function(words) {
+    var newPhrase = encodeURIComponent(words);
+
+    var params = _.chain( window.location.search.slice(1).split('&') )
+                  .map(function(item) { if (item) return item.split('='); })
+                  .compact()
+                  .object()
+                  .value();
+    
+    params["q"] = newPhrase;
+
+    var newParams = _.chain(params)
+                     .map(function(value,key) { return key + "=" + value })
+                     .join("&")
+                     .value();
+
+    var currentPath = window.location.pathname;
+    var newPath = currentPath + "?" + newParams;
+    window.history.replaceState({}, "Crumbles", newPath);
+  },
+
+  sanitize: function(text) {
+    console.log(text);
+    var nohtml = text.replace(/(<([^>]+)>)/ig," ");
+    var nonbsp = nohtml.replace("&nbsp;","");
+    var nolines = nonbsp.replace(/(\r\n|\n|\r)/gm,"");
+    var sanitized = nolines.replace(/[^[\w|\s|\u00A0|'|\?|.|\!|;|:|\-|–]/g,"");
+    console.log('sanitized = ' + sanitized);
+    return sanitized;
+  },
+
+  handleInput: function(e){
+    var wordsLeft = this.state.wordsLeft
+    wordsLeft = this.wordCount();
+    window.clearTimeout(this.state.timeoutId);
+    newTimeoutId = window.setTimeout(this.processInput, 1500); 
+    this.setState({ timeoutId: newTimeoutId, wordsLeft: wordsLeft });
+  },
+
+  wordCount: function() {
+    var maxWords = 25;
+
+    var txt = this.refs.box.getDOMNode().innerHTML;
+    var sanitized = this.sanitize(txt);
+    var words = _.compact(sanitized.split(" "));
+
+    return maxWords - words.length;
+
+  },
+
+  processInput: function(){
+    var txt = this.refs.box.getDOMNode().innerHTML;
+    var sanitized = this.sanitize(txt);
+    this.updateUrl(sanitized);
+    this.props.onWordInput(sanitized); 
+  },
+
+  render: function() {
+    return (
+      <div idName="phrase-input">
+        <div id='mashup-input' ref="box" contentEditable='true' onKeyUp={this.handleInput}></div>
+        <WordCount wordLeft={this.state.wordsLeft} />
+      </div>
+    );
+  }
+});
+
+var WordCount = React.createClass({
+  render: function() {
+    return (
+      <div id="words-left">
+        <b>{this.props.wordLeft}</b> | words remaining.
+      </div>
+    );
+  }
+});
 
 var Player = React.createClass({
 
@@ -229,3 +434,5 @@ var Player = React.createClass({
     );
   }
 });
+
+React.render(<MashupContainer dictionary={StandardDict} />, document.getElementById("main"));
