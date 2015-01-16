@@ -2,13 +2,15 @@ var MashupContainer = React.createClass({
 
   getInitialState: function() { 
     return { 
-      phrase: []
+      phrase: [],
+      audioNeeded: 0
     } 
   },
  
   handlePhraseInput: function(words) {
     console.log(words);
 
+    var newAudioNeeded = 0;
     var oldPhrase = this.state.phrase;
     var newPhrase = [];
     var samePhrase = true;
@@ -17,15 +19,36 @@ var MashupContainer = React.createClass({
       var word = words[i];
       if(oldPhrase[i] && word === oldPhrase[i]["word"]) {
         newPhrase.push(oldPhrase[i]);
-      } else {
-        entry = this.findInDictionary(StandardDict, word);
+      } 
+      else {
+        var entry = this.findInDictionary(StandardDict, word);
+        if (!entry) {
+          var undedfinedEntry = this.notInDictionary(StandardDict, word);
+          // clone or it will binds all undefined to final word used
+          entry = _.clone(undedfinedEntry); 
+          console.log("ENTRY NOT IN DICTIONARY: " + word + " SAVED AS " + entry["word"]);
+          newAudioNeeded += 1
+        }
+
+        console.log("ENTRY AFTER IF: " + word + " SAVED AS " + entry["word"]);
+
+
         newPhrase.push(entry);
+
         samePhrase = false;
+
       }
     };
     if(!samePhrase) {
-      this.setState({ phrase: newPhrase });
-      console.log(this.state.phrase);
+      _.map(newPhrase, function(phrase){ console.log(phrase["word"])});
+
+      var audioNeeded;
+      if (newAudioNeeded == 0) {
+        audioNeeded = this.state.audioNeeded;
+      } else {
+        audioNeeded = newAudioNeeded;
+      }
+      this.setState({ phrase: newPhrase, audioNeeded: audioNeeded });
     }
   },
 
@@ -35,14 +58,14 @@ var MashupContainer = React.createClass({
       entry["defined"] = true;
       return entry;
     } else {
-      console.log("not in dictionary");
-      return this.notInDictionary(dictionary);
+      return false;
     }
   },
 
-  notInDictionary: function(dictionary) {
+  notInDictionary: function(dictionary, word) {
     var randomVideo = dictionary["entries"]["duck"];
     randomVideo["defined"] = false;
+    randomVideo["word"] = word;
     return randomVideo;
   },
 
@@ -52,7 +75,7 @@ var MashupContainer = React.createClass({
     return (
       <div idName="mashup-container">
         <PhraseInput onInput={this.handlePhraseInput} />
-        <Player entries={this.state.phrase} />
+        <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
       </div>
     );
   }
@@ -170,10 +193,9 @@ var WordCount = React.createClass({
 var Player = React.createClass({
 
   getInitialState: function() {
-
     return { 
       ready: false,
-      videoPlaylist: [],
+      videoPlaylist: [], 
       audioPlaylist: [],
       videosPlayed: [],
       audioPlayed: [],
@@ -183,15 +205,16 @@ var Player = React.createClass({
   },
   
   shouldComponentUpdate: function(nextProps, nextState) {
+    // This function stops render action 
+    // if there has not been a change
+
     var current = this.props.entries;
     var next = nextProps.entries;
 
     if (_.isEqual(current, next)) {
-      console.log("entries are the same");
-      return false;
+      return false; // don't render
     } else {
-      console.log("entries are not the same");
-
+      // update state to reflect 0 loaded
       this.setState({
         ready: false,
         videoPlaylist: [],
@@ -201,99 +224,191 @@ var Player = React.createClass({
         loadedVideo: 0,
         loadedAudio: 0
       });
-      return true;
+      return true; // do render
     }
   },
 
   preload: function() {
     console.log("Loading videos...");
-
-
+    
+    console.log("undefined = " + this.props.audioNeeded);
     var entries = this.props.entries;
 
     for(var i=0; i < entries.length; i++) {
-      console.log("    in video load loop, " + i + "/" + entries.length);
+
       var entry = entries[i];
+      console.log("defined ? " + entry);
+      console.log("BEFORE WORD IS " + entry["word"]);
+
+      if (!entry["defined"]) {
+        console.log("entry not defined");
+        // if entry isn't in dictionary, we need audio
+        console.log("BEFORE GET AUDIO ENTRY WORD IS " + entry["word"]);
+        this.getAudio(entry, i);
+      }
+      // we always need video
       this.getVideo(entry, i);
     }
   },
 
+  getAudio: function(entry, i) {
+    console.log("getting audio");
+    var word = encodeURIComponent(entry["word"]);
+    var url = "./audio/" + word;
+    this.getMedia(url, entry, i, false);
+  },
 
   getVideo: function(entry, i) {
+    var url = entry["video_url"];
+    var vidTag = this.refs.video.getDOMNode();
+
+    // MP4 if it plays it, WebM if not
+    if(vidTag.canPlayType && vidTag.canPlayType('video/mp4').replace(/no/, '')) {
+        url = url + ".mp4";
+    } else {
+        url = url + ".webm";
+    }
+    this.getMedia(url, entry, i, true);
+  },
+
+  getMedia: function(url, entry, i, video) {
+    console.log('xhr req for ' + url);
     // Capture context
     var player = this;
 
     // set up our request
-    var url = entry["video_url"];
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    var vidTag = this.refs.video.getDOMNode();
-    if(vidTag.canPlayType && vidTag.canPlayType('video/mp4').replace(/no/, '')) {
-      xhr.open('GET', url + ".mp4", true);
-    } else {
-      xhr.open('GET', url + ".webm", true);
-    }
+    xhr.open('GET', url, true);
 
-    // Go
+    xhr.responseType = 'blob';
+    xhr.dataType = 'jsonp';
+
+
     xhr.onload = function(e) {
       if (this.status == 200) {
+        console.log('loaded data from ' + url);
+        // getting raw blob of data
+        // is only way to ensure all are fully downloaded
         var myBlob = this.response;
-        var vid = (window.webkitURL ? webkitURL : URL).createObjectURL(myBlob);
+        var media = (window.webkitURL ? webkitURL : URL).createObjectURL(myBlob);
 
+        // Add to playlist
         var videoPlaylist = player.state.videoPlaylist;
-        videoPlaylist[i] = { video: vid, defined: entry["defined"] };
+        var audioPlaylist = player.state.audioPlaylist;
 
-        var loadedVideo = player.state.loadedVideo + 1; 
-        var targetLength = player.props.entries.length;
+        var loadedVideo, loadedAudio;
+        if (video) {
+          // Update video playlist & count
+          videoPlaylist[i] = { media: media, defined: entry["defined"] };
+          loadedVideo = player.state.loadedVideo + 1;
+          // Audio unchanged
+          loadedAudio = player.state.loadedAudio;
+        } else {
+          console.log("audio media is " + media)
+          // Update audio & count
+          audioPlaylist[i] = { media: media, defined: entry["defined"] };
+          loadedAudio = player.state.loadedAudio + 1;
+          // Video Unchanged
+          loadedVideo = player.state.loadedVideo;
+        }
 
-        console.log(loadedVideo + " / " + targetLength + " entries loaded" );
+        // Total needed before we can play
+        var loaded = loadedAudio + loadedVideo;
+        var target = player.props.entries.length + player.props.audioNeeded;
 
-        if(loadedVideo === targetLength) { 
+        console.log(loaded + " / " + target + " entries loaded" );
+
+        if(loaded === target) { 
+          // Everything is loaded! 
+          
+          // Audio Playlist is in the rightorder, 
+          // but it holds nil for the empy values
+          audioPlaylist = _.compact(audioPlaylist);
+
+          // Set ready to true and play
           player.setState({
             ready: true,
             videoPlaylist: videoPlaylist,
-            audioPlaylist: player.state.audioPlaylist,
+            audioPlaylist: audioPlaylist,
             videosPlayed: [],
             audioPlayed: [],
             loadedVideo: loadedVideo,
-            loadedAudio: player.state.loadedAudio
+            loadedAudio: loadedAudio
           });
           player.playMashup();
 
-        } else if (loadedVideo < targetLength) {
+        } else if (loaded < target) {
+          // Still more to load...
           player.setState({
             ready: false,
             videoPlaylist: videoPlaylist,
-            audioPlaylist: player.state.audioPlaylist,
+            audioPlaylist: audioPlaylist,
             videosPlayed: [],
             audioPlayed: [],
             loadedVideo: loadedVideo,
-            loadedAudio: player.state.loadedAudio
+            loadedAudio: loadedAudio
           });
         } else { 
-          console.log("loaded is toooooo big");
+          // Something went wrong
         }
        }
     }
     xhr.send();
+
   },
 
-  getTTSAudio: function(entry) {
-    var word = encodeURIComponent(entry["word"]);
-    var url = "http://translate.google.com/translate_tts?ie=UTF-8&tl=en-us&q=" + word;
-    
-  },
+
   playMashup: function() {
     var player = this;
+    var currentAudio, currentVideo;
+    var audioPlaylist = player.state.audioPlaylist;
+    var audioPlayed = player.state.audioPlayed;
     var videoPlaylist = player.state.videoPlaylist;
     var videosPlayed = player.state.videosPlayed;
+    var vidTag = player.refs.video.getDOMNode();
+
+    var $video = $('#' + vidTag.id);
 
     if (videoPlaylist.length > 0) {
 
-      // Get first video and move it to played
-      current = videoPlaylist.shift();
-      videosPlayed.push(entry);
+      console.log("playing video");
+      // Video playlist is our master counter
+      // take the first off and move it to played
+      var currentVideo = videoPlaylist.shift();
+      videosPlayed.push(currentVideo);
 
+      // Set new video source
+
+      vidTag.src = currentVideo.media;
+      console.log("setting src to " + vidTag.src);
+
+      // If not in dictionary, we need audio
+      if (!currentVideo.defined) {
+        console.log("not defined, play audio");
+        console.log("audioPlaylist is " + audioPlaylist);
+        vidTag.muted = true;
+        currentAudio = audioPlaylist.shift();
+        audioTag = player.refs.audio.getDOMNode();
+        audioTag.src = currentAudio.media;
+        audioTag.play();
+        // Bind audio to play in sync with video
+        $video.bind('start', function() {
+          console.log("calling start on audio tag");
+          $video.unbind('start');
+          audioTag.play();
+        });
+      } else {
+        vidTag.muted = false;
+      }
+
+      // Bind to play next after this has ended
+      $video.bind('ended', function () {
+        //$video.unbind('start');
+        $video.unbind('ended');
+        player.playMashup();
+      });
+
+      // Save State
       this.setState({
         ready: true,
         videoPlaylist: videoPlaylist,
@@ -302,18 +417,6 @@ var Player = React.createClass({
         audioPlayed: this.state.audioPlayed,
         loadedVideo: this.state.loadedVideo,
         loadedAudio: this.state.loadedAudio
-      });
-
-      // Set new source
-      vidTag = player.refs.video.getDOMNode();
-      vidTag.src = current.video;
-      vidTag.muted = !current.defined;
-
-      // Bind to play next after this has ended
-      var $video = $('#' + vidTag.id);
-      $video.bind('ended', function () {
-        $video.unbind('ended');
-        player.playMashup();
       });
 
       // Go

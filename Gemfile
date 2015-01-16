@@ -23,6 +23,7 @@ gem 'haml'
 gem 'activerecord', '>= 3.1', :require => 'active_record'
 gem 'pg'
 gem 'padrino-assets'
+gem 'httparty'
 
 # Test requirements
 gem 'rspec', :group => 'test'
