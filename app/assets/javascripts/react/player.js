@@ -8,7 +8,6 @@ var MashupContainer = React.createClass({
   },
  
   handlePhraseInput: function(words) {
-    console.log(words);
 
     var newAudioNeeded = 0;
     var oldPhrase = this.state.phrase;
@@ -26,11 +25,9 @@ var MashupContainer = React.createClass({
           var undedfinedEntry = this.notInDictionary(StandardDict, word);
           // clone or it will binds all undefined to final word used
           entry = _.clone(undedfinedEntry); 
-          console.log("ENTRY NOT IN DICTIONARY: " + word + " SAVED AS " + entry["word"]);
           newAudioNeeded += 1
         }
 
-        console.log("ENTRY AFTER IF: " + word + " SAVED AS " + entry["word"]);
 
         newPhrase.push(entry);
 
@@ -39,7 +36,6 @@ var MashupContainer = React.createClass({
       }
     };
     if(!samePhrase) {
-      _.map(newPhrase, function(phrase){ console.log(phrase["word"])});
 
       var audioNeeded;
       if (newAudioNeeded == 0) {
@@ -82,6 +78,59 @@ var MashupContainer = React.createClass({
 
 var PhraseInput = React.createClass({
 
+  handleText: function(text) {
+    var words = this.makeWords(text);
+    console.log(words);
+    this.props.onInput(words);
+  },
+
+  makeWords: function(text) {
+    console.log(text);
+    var noPunctuation = text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, " ");
+    var spacedOut = noPunctuation.replace(/[^[a-zA-Z\s]/g, '');
+    var lowercase = spacedOut.toLowerCase();
+    var words = lowercase.split(" ");
+    return _.compact(words);
+  },
+
+  render: function() {
+    var wordsRemaining = 120;
+    return (
+      <div idName="phrase-input">
+      <TextBox onWordInput={this.handleText} />
+      <WordCount words={wordsRemaining} />
+      </div>
+    );
+  }
+});
+
+
+var TextBox = React.createClass({
+  getInitialState: function() {
+    return { timeoutId: 0 }
+  },
+
+  componentDidMount: function() {
+
+    var text = this.getPhraseFromUrl();
+    var inputNode = this.refs.box.getDOMNode();
+    inputNode.innerHTML = text;
+  },
+
+  getPhraseFromUrl: function() {
+    var params = _.chain( location.search.slice(1).split('&') )
+                  .map(function(item) { if (item) return item.split('='); })
+                  .compact()
+                  .object()
+                  .value();
+    var phrase = params["q"];
+    if (phrase === undefined) {
+      return "Hello and welcome!";
+    } else {
+      return decodeURIComponent(phrase);
+    }
+  },
+
   updateUrl: function(words) {
     var newPhrase = encodeURIComponent(words);
 
@@ -103,80 +152,32 @@ var PhraseInput = React.createClass({
     window.history.replaceState({}, "Crumbles", newPath);
   },
 
-  getPhraseFromUrl: function() {
-    var params = _.chain( location.search.slice(1).split('&') )
-                  .map(function(item) { if (item) return item.split('='); })
-                  .compact()
-                  .object()
-                  .value();
-    var phrase = params["q"];
-    if (phrase === undefined) {
-      return "Hello and welcome!";
-    } else {
-      return decodeURIComponent(phrase);
-    }
-  },
-
-  handleText: function(text) {
-    this.updateUrl(text);
-    var words = this.makeWords(text);
-    this.props.onInput(words);
-  },
-
-  makeWords: function(text) {
-    var noPunctuation = text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, " ");
-    var spacedOut = noPunctuation.replace(/[^[a-zA-Z\s]/g, '');
-    var lowercase = spacedOut.toLowerCase();
-    var words = lowercase.split(" ");
-    return _.compact(words);
-  },
-
-  render: function() {
-    var wordsRemaining = 120;
-    var phrase = this.getPhraseFromUrl();
-    return (
-      <div idName="phrase-input">
-      <TextBox onWordInput={this.handleText} phrase={phrase} />
-      <WordCount words={wordsRemaining} />
-      </div>
-    );
-  }
-});
-
-
-var TextBox = React.createClass({
-  getInitialState: function() {
-    return { timeoutId: 0 }
-  },
-
   sanitize: function(text) {
-    var nolines = text.replace(/(\r\n|\n|\r)/gm,"");
-    return nolines.replace(/[^[\w|\s|'|\?|.|\!|;|:|\-|–]/g,"");
+    console.log(text);
+    var nohtml = text.replace(/(<([^>]+)>)/ig," ");
+    var nonbsp = nohtml.replace("&nbsp","");
+    var nolines = nonbsp.replace(/(\r\n|\n|\r)/gm,"");
+    var sanitized = nolines.replace(/[^[\w|\s|\u00A0|'|\?|.|\!|;|:|\-|–]/g,"");
+    console.log('sanitized = ' + sanitized);
+    return sanitized;
   },
 
-  handleInput: function(e){
+  handleAfterTimeout: function(e){
     window.clearTimeout(this.state.timeoutId);
-
-    if (e.which === 13) {
-      // enter pressed, play immediately
-      e.preventDefault();
-      this.processInput();
-    } else {
-      // play when they stop typing
-      newTimeoutId = window.setTimeout(this.processInput, 1500); 
-      this.setState({ timeoutId: newTimeoutId });
-    }
+    newTimeoutId = window.setTimeout(this.processInput, 1500); 
+    this.setState({ timeoutId: newTimeoutId });
   },
+
   processInput: function(){
-    var txt = this.getDOMNode().innerHTML;
+    var txt = this.refs.box.getDOMNode().innerHTML;
     var sanitized = this.sanitize(txt);
+    this.updateUrl(sanitized);
     this.props.onWordInput(sanitized); 
   },
 
   render: function() {
-    var txt = this.sanitize(this.props.phrase);
     return (
-      <div id='mashup-input' contentEditable='true' onKeyUp={this.handleInput}>{txt}</div>
+      <div id='mashup-input' ref="box" contentEditable='true' onKeyUp={this.handleAfterTimeout}></div>
     );
   }
 });
@@ -230,21 +231,15 @@ var Player = React.createClass({
   },
 
   preload: function() {
-    console.log("Loading videos...");
     
-    console.log("undefined = " + this.props.audioNeeded);
     var entries = this.props.entries;
 
     for(var i=0; i < entries.length; i++) {
 
       var entry = entries[i];
-      console.log("defined ? " + entry);
-      console.log("BEFORE WORD IS " + entry["word"]);
 
       if (!entry["defined"]) {
-        console.log("entry not defined");
         // if entry isn't in dictionary, we need audio
-        console.log("BEFORE GET AUDIO ENTRY WORD IS " + entry["word"]);
         this.getAudio(entry, i);
       }
       // we always need video
@@ -253,7 +248,6 @@ var Player = React.createClass({
   },
 
   getAudio: function(entry, i) {
-    console.log("getting audio");
     var word = encodeURIComponent(entry["word"]);
     var url = "./tts/m/" + word;
     this.getMedia(url, entry, i, false);
@@ -273,7 +267,6 @@ var Player = React.createClass({
   },
 
   getMedia: function(url, entry, i, video) {
-    console.log('xhr req for ' + url);
     // Capture context
     var player = this;
 
@@ -286,7 +279,6 @@ var Player = React.createClass({
 
     xhr.onload = function(e) {
       if (this.status == 200) {
-        console.log('loaded data from ' + url);
         // getting raw blob of data
         // is only way to ensure all are fully downloaded
         var myBlob = this.response;
@@ -304,7 +296,6 @@ var Player = React.createClass({
           // Audio unchanged
           loadedAudio = player.state.loadedAudio;
         } else {
-          console.log("audio media is " + media)
           // Update audio & count
           audioPlaylist[i] = { media: media, defined: entry["defined"] };
           loadedAudio = player.state.loadedAudio + 1;
@@ -316,7 +307,6 @@ var Player = React.createClass({
         var loaded = loadedAudio + loadedVideo;
         var target = player.props.entries.length + player.props.audioNeeded;
 
-        console.log(loaded + " / " + target + " entries loaded" );
 
         if(loaded === target) { 
           // Everything is loaded! 
@@ -371,7 +361,6 @@ var Player = React.createClass({
 
     if (videoPlaylist.length > 0) {
 
-      console.log("playing video");
       // Video playlist is our master counter
       // take the first off and move it to played
       var currentVideo = videoPlaylist.shift();
@@ -380,12 +369,9 @@ var Player = React.createClass({
       // Set new video source
 
       vidTag.src = currentVideo.media;
-      console.log("setting src to " + vidTag.src);
 
       // If not in dictionary, we need audio
       if (!currentVideo.defined) {
-        console.log("not defined, play audio");
-        console.log("audioPlaylist is " + audioPlaylist);
         vidTag.muted = true;
         currentAudio = audioPlaylist.shift();
         audioTag = player.refs.audio.getDOMNode();
@@ -393,7 +379,6 @@ var Player = React.createClass({
         audioTag.play();
         // Bind audio to play in sync with video
         $video.bind('start', function() {
-          console.log("calling start on audio tag");
           $video.unbind('start');
           audioTag.play();
         });
