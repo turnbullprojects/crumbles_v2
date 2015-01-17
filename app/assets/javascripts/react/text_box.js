@@ -1,7 +1,7 @@
 
 var TextBox = React.createClass({
   getInitialState: function() {
-    return { timeoutId: 0, wordsLeft: 0 }
+    return { timeoutIdOne: 0, timeoutIdTwo: 0, wordsLeft: 0 }
   },
 
   componentDidMount: function() {
@@ -47,22 +47,29 @@ var TextBox = React.createClass({
   },
 
   sanitize: function(text) {
-    console.log(text);
     var nohtml = text.replace(/(<([^>]+)>)/ig," ");
     var singlespace = nohtml.replace(/\s{2,}/g, ' ');
-    var nonbsp = singlespace.replace("&nbsp;","");
+    var nonbsp = singlespace.replace("&nbsp;","").replace("nbsp;","");
     var nolines = nonbsp.replace(/(\r\n|\n|\r)/gm,"");
-    var sanitized = nolines.replace(/[^[\w|\s|\u00A0|'|\?|.|\!|;|:|\-|–]/g,"");
+    var sanitized = nolines.replace(/[^[\w|\s|\u00A0|'|\?|.|,|\!|;|:|\-|–]/g,"");
     return sanitized;
   },
 
   handleInput: function(e){
+
     var wordsLeft = this.state.wordsLeft
 
     wordsLeft = this.wordCount();
-    window.clearTimeout(this.state.timeoutId);
-    newTimeoutId = window.setTimeout(this.processInput, 1500); 
-    this.setState({ timeoutId: newTimeoutId, wordsLeft: wordsLeft });
+    window.clearTimeout(this.state.timeoutIdOne);
+    window.clearTimeout(this.state.timeoutIdTwo);
+
+    timeoutIdOne = window.setTimeout(this.processInput, 1500); 
+    timeoutIdTwo = window.setTimeout(this.markUndefined, 1500); 
+
+    this.setState({ timeoutIdOne: timeoutIdOne, 
+                    timeoutIdTwo: timeoutIdTwo,
+                    wordsLeft: wordsLeft 
+                  });
   },
 
   wordCount: function() {
@@ -74,7 +81,6 @@ var TextBox = React.createClass({
   },
 
   markUndefined: function() {
-    console.log("running markUndefined");
     if(this.refs.box === undefined) {
       // DOM not built yet
     } 
@@ -83,40 +89,53 @@ var TextBox = React.createClass({
       var el = this.refs.box.getDOMNode();
       var innerText = this.refs.box.getDOMNode().innerHTML;
       var words = this.sanitize(innerText).split(" ");
+      console.log("checking undefined");
+      for(var i=0; i < words.length; i++) {
+        console.log("loop");
+        var word = words[i];
+        // Check if over word count
+        if (i > 25) {
+          console.log("disabled word: " + w);
+          console.log("count is over 25; currently: " + i);
+          words[i] = "<span class='disabled'>" + word + "</span>";
+          console.log("continuing");
+          continue;
+        }
+        console.log("not continuing");
+        // Check if defined
+        for(var j=0;j < entries.length; j++) {
 
-      _.each(entries, function(entry){
-        if(entry["defined"] === false) {
-          var w = entry["word"];
-          for(var i=0;i < words.length; i++) {
-            var word = words[i];
+          var entry = entries[j];
+          console.log(entry[j] + " is defined? " + entry["defined"]);
+          if(entry["defined"] === false) {
+            var w = entry["word"];
+            console.log("UNDEFINED word: " + w);
             var regex = RegExp(w,"ig");
             if(word.match(regex)) {
               words[i] = "<span class='undefined'>" + word + "</span>"
             }
           }
+
         }
-      });
+      }
       var newTxt = words.join(" ");
       this.saveCursorPositionAndUpdateHTML(el, newTxt);
-
-      range.selectCharacters(el, selStartOffset, selEndOffset);
-      sel.setSingleRange(range);
 
       } 
      
   },
 
+
+
   saveCursorPositionAndUpdateHTML: function(el, newHTML) {
       // Setup range
-      console.log(rangy);
       var sel = rangy.getSelection(el);
       var range = sel.getRangeAt(0);
-      console.log("sel is " + sel);
 
-      console.log("range is " + range);
 
       // Get cursor position
-      var rangePrecedingBoundary = range.cloneRange().setStart(el,0);
+      var rangePrecedingBoundary = range.cloneRange();
+      rangePrecedingBoundary.setStart(el, 0);
       var selEndOffset = rangePrecedingBoundary.text().length;
       rangePrecedingBoundary.setEnd(range.startContainer, range.startOffset);
       var selStartOffset = rangePrecedingBoundary.text().length;
@@ -132,7 +151,6 @@ var TextBox = React.createClass({
   },
 
   processInput: function(){
-    this.markUndefined();
 
     var txt = this.refs.box.getDOMNode().innerHTML;
     var sanitized = this.sanitize(txt);
@@ -141,6 +159,7 @@ var TextBox = React.createClass({
   },
 
   render: function() {
+
     return (
       <div idName="phrase-input">
       <div id='mashup-input' ref="box" contentEditable='true' onKeyUp={this.handleInput}></div>

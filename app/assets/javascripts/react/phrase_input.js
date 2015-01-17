@@ -12,7 +12,11 @@ var PhraseInput = React.createClass({
     var spacedOut = noPunctuation.replace(/[^[a-zA-Z\s]/g, '');
     var lowercase = spacedOut.toLowerCase();
     var words = lowercase.split(" ");
-    return _.compact(words);
+    var compacted = _.compact(words);
+    if(compacted.length > 25) {
+      compacted = compacted.slice(0,25);
+    }
+    return compacted;
   },
 
   render: function() {

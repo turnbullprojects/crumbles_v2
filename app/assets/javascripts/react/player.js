@@ -40,7 +40,7 @@ var Player = React.createClass({
   preload: function() {
     
     var entries = this.props.entries;
-
+    console.log("Preloading for " + entries.length + " entries");
     for(var i=0; i < entries.length; i++) {
 
       var entry = entries[i];

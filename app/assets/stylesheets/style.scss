@@ -107,6 +107,7 @@ button {
   &:focus { outline: none; }
 }
 .undefined { color: $red; }
+.disabled { color: $grey; }
 
 // Words left
 #words-left {
