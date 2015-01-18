@@ -10,15 +10,16 @@ Crumbles::App.controllers :main do
     render "react"
   end
 
+  get :dictionary, map: "/dictionary/:dictionary" do 
+    content_type :json
+    @dictionary = Dictionary.find_by_name(params[:dictionary]) || Dictionary.new
+    return @dictionary.json_friendly_hash.to_json
+  end
+
   get :tts_f, map: "/tts/f/:word" do
     content_type("audio/mp3")
     word = params[:word]
 
-    # speech = ""
-    # url = "http://tts-api.com/tts.mp3?q=Hello%20World"
-    # options = {
-    #   q: "#{word}"
-    # }    
     url = "http://translate.google.com/translate_tts"
     options = {
       ie: "UTF-8",
@@ -27,9 +28,6 @@ Crumbles::App.controllers :main do
       textlen: "#{word.length}"
     }
     res = HTTParty.get(url, query: options)
-    if res.code == 200
-      speech = Base64.encode64(res.parsed_response)
-    end
     return res
   end
 

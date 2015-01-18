@@ -10,6 +10,7 @@ RSpec.describe Dictionary do
       expect(duplicate_dict).not_to be_valid
     end
   end
-  
+
+  pending "#to_json" 
   
 end
