@@ -223,7 +223,7 @@ var Player = React.createClass({
     this.preload();
     return (
       <div idName="player">
-        <video ref='video' type='video/mp4' controls id='master-vid'></video>
+        <video ref='video' type='video/mp4' id='master-vid'></video>
         <audio ref="audio"></audio>
       </div>
     );

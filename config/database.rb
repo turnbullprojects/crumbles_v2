@@ -1,11 +1,25 @@
-ActiveRecord::Base.configurations[Padrino.env] = {
-  adapter:   'postgresql',
-  database:  ENV['POSTGRESQL_DATABASE'],
-  username:  ENV['POSTGRESQL_USER'],
-  password:  ENV['POSTGRESQL_PASSWORD'],
-  host:      ENV['POSTGRESQL_HOST'],
-  port:      5432
-}
+if ENV['DATABASE_URL']
+  postgres = URI.parse(ENV['DATABASE_URL'])
+
+  ActiveRecord::Base.configurations[:production] = {
+    :adapter  => 'postgresql',
+    :encoding => 'utf8',
+    :database => postgres.path[1..-1], 
+    :username => postgres.user,
+    :password => postgres.password,
+    :host     => postgres.host
+  }
+else
+
+  ActiveRecord::Base.configurations[Padrino.env] = {
+    adapter:   'postgresql',
+    database:  ENV['POSTGRESQL_DATABASE'],
+    username:  ENV['POSTGRESQL_USER'],
+    password:  ENV['POSTGRESQL_PASSWORD'],
+    host:      ENV['POSTGRESQL_HOST'],
+    port:      5432
+  }
+end
 
 
 # Setup our logger
