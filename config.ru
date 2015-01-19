@@ -10,10 +10,10 @@ map '/assets' do
   run Padrino::Assets.environment
 end
 Sprockets.append_path('/dictionaries/')
+require 'resque/server'
 
-# Load sidekiq web interface
-require 'sidekiq/web'
-map('/sidekiq') { run Sidekiq::Web }
-
+run Rack::URLMap.new \
+  "/"       => Padrino.application,
+  "/resque" => Resque::Server.new
 
 run Padrino.application

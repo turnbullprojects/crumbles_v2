@@ -11,8 +11,6 @@ Bundler.require(:default, RACK_ENV)
 require 'dotenv'
 Dotenv.load ".env.#{Padrino.env}"
 
-# Load worker definitions
-require File.join(PADRINO_ROOT, 'config', 'workers.rb')
 
 ##
 # ## Enable devel logging
