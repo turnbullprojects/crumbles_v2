@@ -25,7 +25,7 @@ gem 'aws-sdk', '~> 1.5.7'
 # Uploads
 gem 'paperclip'
 gem 'av'
-gem 'resque'
+gem 'resque', "~> 1.22.0"
 gem 'delayed_paperclip'
 
 

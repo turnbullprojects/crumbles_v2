@@ -1,2 +1,2 @@
 web: bundle exec puma -C config/puma.rb
-worker: bundle exec sidekiq -r ./config/workers.rb -q paperclip
+resque: bundle exec rake resque:work QUEUE=*
