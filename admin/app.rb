@@ -33,6 +33,8 @@ module Crumbles
     end
 
     access_control.roles_for :admin do |role|
+      role.project_module :entries, '/entries'
+      role.project_module :dictionaries, '/dictionaries'
       role.project_module :accounts, '/accounts'
     end
 

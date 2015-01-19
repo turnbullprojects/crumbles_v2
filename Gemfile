@@ -1,8 +1,8 @@
 ruby '2.1.5'
 source 'https://rubygems.org'
 
-# Server requirements
-gem 'thin' 
+# Server 
+gem 'puma' 
 
 # Optional JSON codec (faster performance)
 gem 'oj'
@@ -16,22 +16,37 @@ gem 'foreman'
 gem 'pry'
 gem 'racksh'
 
-# Component requirements
+# DB
 gem 'bcrypt'
-gem 'sass'
-gem 'haml'
 gem 'activerecord', '>= 3.1', :require => 'active_record'
 gem 'pg'
+gem 'aws-sdk', '~> 1.5.7'
+
+# Uploads
+gem 'paperclip'
+gem 'av'
+gem 'sidekiq'
+gem 'delayed_paperclip'
+
+
+
+# HTTP
 gem 'httparty'
+gem 'mechanize'
 
 
 # Front End
+gem 'sass'
+gem 'haml'
 gem 'compass', '~> 1.0.1'
 gem 'sprockets-sass'
 gem 'padrino-assets'
 gem 'uglifier'
 gem 'yui-compressor'
 
+
+# Helpers
+gem 'will_paginate'
 
 # Test requirements
 gem 'rspec', :group => 'test'

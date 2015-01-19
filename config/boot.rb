@@ -11,6 +11,9 @@ Bundler.require(:default, RACK_ENV)
 require 'dotenv'
 Dotenv.load ".env.#{Padrino.env}"
 
+# Load worker definitions
+require File.join(PADRINO_ROOT, 'config', 'workers.rb')
+
 ##
 # ## Enable devel logging
 #
@@ -39,6 +42,10 @@ Dotenv.load ".env.#{Padrino.env}"
 # Add your before (RE)load hooks here
 #
 Padrino.before_load do
+  require 'will_paginate'
+  require 'will_paginate/active_record'
+  require 'will_paginate/view_helpers/sinatra'
+  include WillPaginate::Sinatra::Helpers
 end
 
 ##

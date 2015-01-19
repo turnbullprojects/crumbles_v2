@@ -17,7 +17,8 @@ else
     username:  ENV['POSTGRESQL_USER'],
     password:  ENV['POSTGRESQL_PASSWORD'],
     host:      ENV['POSTGRESQL_HOST'],
-    port:      5432
+    port:      5432,
+    pool: 30
   }
 end
 

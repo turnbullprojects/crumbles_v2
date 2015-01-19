@@ -11,6 +11,8 @@ RSpec.describe Dictionary do
     end
   end
 
-  pending "#to_json" 
+  pending "#json_friendly_hash" 
+  pending "#format_entries" 
+
   
 end

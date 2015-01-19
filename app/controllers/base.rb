@@ -37,14 +37,8 @@ Crumbles::App.controllers :main do
     word = params[:word]
 
     url = "http://tts-api.com/tts.mp3"
-    options = {
-      q: "#{word}"
-    }    
-
+    options = { q: "#{word}" }    
     res = HTTParty.get(url, query: options)
-    if res.code == 200
-      speech = Base64.encode64(res.parsed_response)
-    end
     return res
   end
 end

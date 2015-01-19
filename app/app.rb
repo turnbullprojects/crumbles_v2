@@ -1,5 +1,6 @@
 module Crumbles
   class App < Padrino::Application
+  register WillPaginate::Sinatra
     register SassInitializer
     use ConnectionPoolManagement
     register Padrino::Mailer
