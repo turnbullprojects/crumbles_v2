@@ -7,10 +7,8 @@
 require File.expand_path("../config/boot.rb", __FILE__)
 
 Sprockets.append_path('/dictionaries/')
-require 'resque/server'
 
 run Rack::URLMap.new \
   "/"       => Padrino.application,
-  "/resque" => Resque::Server.new,
   "/assets" => Padrino::Assets.environment
 
