@@ -23,7 +23,11 @@ Crumbles::Admin.controllers :entries do
     @success = ""
     @error = ""
     videos.each do |video|
-      entry = Entry.new(video: video, dictionary_id: @dictionary_id)
+      logger.info "Video is #{video}"
+      file = video[:tempfile]
+      panda = Panda::Video.create(:file => file)
+      entry_name = File.basename(file ,File.extname(file))
+      entry = Entry.new(panda_video_id: panda.id, dictionary_id: @dictionary_id, name: entry_name)
       begin
         if entry.save
           @success << "\n#{entry.name} saved"

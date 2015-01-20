@@ -27,6 +27,8 @@ gem 'paperclip'
 gem 'av'
 gem 'resque', "~> 1.22.0"
 gem 'delayed_paperclip'
+gem 'panda', '~> 1.6.0'
+
 
 
 

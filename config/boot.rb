@@ -11,6 +11,10 @@ Bundler.require(:default, RACK_ENV)
 require 'dotenv'
 Dotenv.load ".env.#{Padrino.env}"
 
+# Load Initializers
+Padrino.require_dependencies "#{Padrino.root}/config/initializers/**/*.rb"
+
+
 
 ##
 # ## Enable devel logging
