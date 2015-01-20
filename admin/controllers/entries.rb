@@ -25,8 +25,8 @@ Crumbles::Admin.controllers :entries do
     videos.each do |video|
       logger.info "Video is #{video}"
       file = video[:tempfile]
-      panda = Panda::Video.create(:file => file)
-      entry_name = File.basename(file ,File.extname(file))
+      entry_name = video[:filename].gsub(/\.(.*)/,"")
+      panda = Panda::Video.create(file: file)
       entry = Entry.new(panda_video_id: panda.id, dictionary_id: @dictionary_id, name: entry_name)
       begin
         if entry.save
@@ -35,6 +35,7 @@ Crumbles::Admin.controllers :entries do
           @error << "\n#{entry.name} not saved."
         end
       rescue ActiveRecord::RecordNotUnique
+        logger.info "Not Unique"
         @error << "\n#{entry.name} is a duplicate to another word already in this dictionary."
       end
         
