@@ -1,4 +1,3 @@
-
 var Player = React.createClass({
  
   getInitialState: function() {
@@ -11,9 +10,9 @@ var Player = React.createClass({
     };
   },
   
-  ////////////////////////////////////////////////// 
-  // DOM HELPERS
-  ////////////////////////////////////////////////// 
+////////////////////////////////////////////////// 
+// DOM HELPERS
+////////////////////////////////////////////////// 
   audioNode: function() {
     if(this.refs.audio){ return this.refs.audio.getDOMNode(); }
   },
@@ -24,9 +23,9 @@ var Player = React.createClass({
     return $('#' + this.vidNode().id);
   },
 
-  ////////////////////////////////////////////////// 
-  // STATE HELPERS
-  ////////////////////////////////////////////////// 
+////////////////////////////////////////////////// 
+// STATE HELPERS
+////////////////////////////////////////////////// 
 
   currentVideo: function() {
     var playlist = this.state.videoPlaylist;
@@ -39,16 +38,13 @@ var Player = React.createClass({
       return playlist[index];
   },
   currentVideoSrc: function() {
-    if (this.currentVideo()) { return this.currentVideo().media; } 
-    else { return ""; }
+    return this.currentVideo() ? this.currentVideo().media : "";
   },
   currentAudioSrc: function() {
-    if (this.currentAudio()) { return this.currentAudio().media; }
-    else { return ""; }
+    return this.currentAudio() ? this.currentAudio().media : "";
   },
-  videoHasSeparateAudio: function(){
-    if(this.currentVideo())
-      return !this.currentVideo().defined
+  videoShouldMute: function(){
+    return this.currentVideo() ? !this.currentVideo().defined : false
   },
 
   canPlay: function() {
@@ -102,9 +98,14 @@ var Player = React.createClass({
   },
 
   getAudio: function(entry, i) {
+    console.log("ENTRY IS !!!");
+    console.log(entry["word"]);
+    console.log("!!!!!!!!");
     var word = encodeURIComponent(entry["word"]);
     var url = "./tts/m/" + word;
+    console.log(url);
     this.getMedia(url, entry, i, false);
+    
   },
 
   getVideo: function(entry, i) {
@@ -172,8 +173,9 @@ var Player = React.createClass({
     else { playIndex += 1; }
 
     // Set bindings
-    if (this.videoHasSeparateAudio()) { this.bindAudio(); } 
+    this.setVideoAudio();
     this.incrementWhenFinished(playIndex);
+    this.audioNode().play();
     this.vidNode().play();
   },
 
@@ -187,14 +189,26 @@ var Player = React.createClass({
     });
   },
 
-  bindAudio: function(){
-    var player = this;
-     player.$video().bind('start', function() {
-        // playing audio bound to start of video
-        player.$video().unbind('start');
-        player.audioNode().play();
-      });
+  setVideoAudio: function() {
+    if (this.videoShouldMute()) { 
+      this.bindAudio(); 
+      this.vidNode().muted = true;
+    } else {
+      this.vidNode().muted = false;
+    }
   },
+
+  bindAudio: function(){
+    console.log("binding audio");
+    var player = this;
+    player.$video().bind('start', function() {
+      console.log("video start event");
+      // playing audio bound to start of video
+      //player.$video().unbind('start');
+      player.audioNode().play();
+    });
+  },
+
   incrementIndices: function(playIndex) {
       this.setState({
         videoPlaylist: this.state.videoPlaylist,
@@ -210,6 +224,7 @@ var Player = React.createClass({
   //////////////////////////////////////////////////
   render: function() {
     console.log("Rendering");
+    console.log(this.currentAudioSrc());
     if (this.canPlay()) { 
       console.log("can play");
       if (this.vidNode()) { this.playMashup(); }
@@ -218,7 +233,7 @@ var Player = React.createClass({
     }
     return (
       <div idName="player">
-        <video ref='video' src={this.currentVideoSrc()} mute={this.videoHasSeparateAudio()} type='video/mp4' id='master-vid'></video>
+        <video ref='video' src={this.currentVideoSrc()} type='video/mp4' id='master-vid'></video>
         <audio ref="audio" src={this.currentAudioSrc()}></audio>
       </div>
     );

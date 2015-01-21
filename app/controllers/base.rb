@@ -17,7 +17,7 @@ Crumbles::App.controllers :main do
   end
 
   get :tts_f, map: "/tts/f/:word" do
-    content_type("audio/mp3")
+    content_type("audio/mpeg")
     word = params[:word]
 
     url = "http://translate.google.com/translate_tts"
@@ -28,7 +28,7 @@ Crumbles::App.controllers :main do
       textlen: "#{word.length}"
     }
     res = HTTParty.get(url, query: options)
-    return res
+    return res.parsed_response
   end
 
 
@@ -39,7 +39,7 @@ Crumbles::App.controllers :main do
     url = "http://tts-api.com/tts.mp3"
     options = { q: "#{word}" }    
     res = HTTParty.get(url, query: options)
-    return res
+    return res.parsed_response
   end
 end
 
