@@ -29,20 +29,11 @@ var MashupContainer = React.createClass({
         }
 
         newPhrase.push(entry);
-
         samePhrase = false;
-
       }
     };
     if(!samePhrase) {
-
-      var audioNeeded;
-      if (newAudioNeeded == 0) {
-        audioNeeded = this.state.audioNeeded;
-      } else {
-        audioNeeded = newAudioNeeded;
-      }
-      this.setState({ phrase: newPhrase, audioNeeded: audioNeeded });
+      this.setState({ phrase: newPhrase, audioNeeded: newAudioNeeded });
     }
   },
 

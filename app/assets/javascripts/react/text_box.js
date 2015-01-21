@@ -1,4 +1,3 @@
-
 var TextBox = React.createClass({
   getInitialState: function() {
     return { timeoutIdOne: 0, timeoutIdTwo: 0, wordsLeft: 0 }

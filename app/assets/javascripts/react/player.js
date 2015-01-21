@@ -40,9 +40,22 @@ var Player = React.createClass({
   currentVideoSrc: function() {
     return this.currentVideo() ? this.currentVideo().media : "";
   },
+  currentVideoImg: function() {
+    if (this.currentVideo()) {
+      console.log(this.currentVideo().image);
+      return this.currentVideo().image;
+    } 
+    else if(this.props.entries[0]) {
+      return this.props.entries[0]["thumbnail"];
+    } 
+    else {
+      return "";
+    }
+  },
   currentAudioSrc: function() {
     return this.currentAudio() ? this.currentAudio().media : "";
   },
+
   videoShouldMute: function(){
     return this.currentVideo() ? !this.currentVideo().defined : false
   },
@@ -55,9 +68,9 @@ var Player = React.createClass({
     return loaded === target 
   },
 
-  ////////////////////////////////////////////////// 
-  // PRELOAD VIDEOS AND AUDIO
-  ////////////////////////////////////////////////// 
+////////////////////////////////////////////////// 
+// PRELOAD VIDEOS AND AUDIO
+////////////////////////////////////////////////// 
 
   shouldComponentUpdate: function(nextProps, nextState) {
     // If there are new videos, load them
@@ -66,21 +79,16 @@ var Player = React.createClass({
 
     console.log("running should component update");
     if (_.isEqual(current, next)) { 
-      console.log("is equal. Current loadedVideo count is " + this.state.loadedVideo + " and next is " + nextState.loadedVideo);
       if(nextState.loadedVideo === 0) {
-        console.log("preload running because we got nothing");
         this.preload(nextProps.entries);
       }
       return true;
     } 
     else if (this.state.loadedVideo !== 0) {
-      console.log("Needs to be reset before rerender")
-      // reset state, will trigger a rerender and load next iteration
       this.setState(this.getInitialState()); 
       return false;
     } 
     else { 
-      console.log("Preloading...");
       this.preload(nextProps.entries); 
       return true;
     }
@@ -98,12 +106,8 @@ var Player = React.createClass({
   },
 
   getAudio: function(entry, i) {
-    console.log("ENTRY IS !!!");
-    console.log(entry["word"]);
-    console.log("!!!!!!!!");
     var word = encodeURIComponent(entry["word"]);
     var url = "./tts/m/" + word;
-    console.log(url);
     this.getMedia(url, entry, i, false);
     
   },
@@ -127,7 +131,6 @@ var Player = React.createClass({
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'blob';
-    xhr.dataType = 'jsonp';
 
     xhr.onload = function(e) {
       if (this.status == 200) {
@@ -143,7 +146,7 @@ var Player = React.createClass({
         var loadedAudio = player.state.loadedAudio;
 
         if (video) {
-          videoPlaylist[i] = { media: media, defined: entry["defined"] };
+          videoPlaylist[i] = { media: media, defined: entry["defined"], image: entry["thumbnail"] };
           loadedVideo += 1;
         } else {
           audioPlaylist[i] = { media: media, defined: entry["defined"] };
@@ -161,9 +164,9 @@ var Player = React.createClass({
     xhr.send();
   },
 
-  //////////////////////////////////////////////////  
-  // PLAY FUNCTIONALITY
-  //////////////////////////////////////////////////  
+//////////////////////////////////////////////////  
+// PLAY FUNCTIONALITY
+//////////////////////////////////////////////////  
   playMashup: function() {
     var playIndex = this.state.playIndex;
     var playlistLength = this.state.videoPlaylist.length;
@@ -223,17 +226,12 @@ var Player = React.createClass({
   // RENDER
   //////////////////////////////////////////////////
   render: function() {
-    console.log("Rendering");
-    console.log(this.currentAudioSrc());
     if (this.canPlay()) { 
-      console.log("can play");
       if (this.vidNode()) { this.playMashup(); }
-    } else {
-      console.log("can't play");
-    }
+    } 
     return (
       <div idName="player">
-        <video ref='video' src={this.currentVideoSrc()} type='video/mp4' id='master-vid'></video>
+        <video ref='video' src={this.currentVideoSrc()} poster={this.currentVideoImg()} type='video/mp4' id='master-vid'></video>
         <audio ref="audio" src={this.currentAudioSrc()}></audio>
       </div>
     );
