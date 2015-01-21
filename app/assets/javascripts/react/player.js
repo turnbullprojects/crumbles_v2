@@ -1,6 +1,6 @@
 
 var Player = React.createClass({
-
+ 
   getInitialState: function() {
     return { 
       videoPlaylist: [], 
@@ -11,30 +11,93 @@ var Player = React.createClass({
     };
   },
   
-  shouldComponentUpdate: function(nextProps, nextState) {
+  ////////////////////////////////////////////////// 
+  // DOM HELPERS
+  ////////////////////////////////////////////////// 
+  audioNode: function() {
+    if(this.refs.audio){ return this.refs.audio.getDOMNode(); }
+  },
+  vidNode: function() {
+    if(this.refs.video) { return this.refs.video.getDOMNode(); }
+  },
+  $video: function() {
+    return $('#' + this.vidNode().id);
+  },
 
+  ////////////////////////////////////////////////// 
+  // STATE HELPERS
+  ////////////////////////////////////////////////// 
+
+  currentVideo: function() {
+    var playlist = this.state.videoPlaylist;
+    var index = this.state.playIndex;
+    return playlist[index];
+  },
+  currentAudio: function() {
+      var playlist = this.state.audioPlaylist;
+      var index = this.state.playIndex;
+      return playlist[index];
+  },
+  currentVideoSrc: function() {
+    if (this.currentVideo()) { return this.currentVideo().media; } 
+    else { return ""; }
+  },
+  currentAudioSrc: function() {
+    if (this.currentAudio()) { return this.currentAudio().media; }
+    else { return ""; }
+  },
+  videoHasSeparateAudio: function(){
+    if(this.currentVideo())
+      return !this.currentVideo().defined
+  },
+
+  canPlay: function() {
+    var loaded = this.state.loadedAudio + this.state.loadedVideo;
+    console.log("loaded: " + loaded);
+    var target = this.props.entries.length + this.props.audioNeeded;
+    console.log("target: " + target);
+    return loaded === target 
+  },
+
+  ////////////////////////////////////////////////// 
+  // PRELOAD VIDEOS AND AUDIO
+  ////////////////////////////////////////////////// 
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    // If there are new videos, load them
     var current = this.props.entries;
     var next = nextProps.entries;
 
-    if (_.isEqual(current, next)) {
+    console.log("running should component update");
+    if (_.isEqual(current, next)) { 
+      console.log("is equal. Current loadedVideo count is " + this.state.loadedVideo + " and next is " + nextState.loadedVideo);
+      if(nextState.loadedVideo === 0) {
+        console.log("preload running because we got nothing");
+        this.preload(nextProps.entries);
+      }
       return true;
-    } else {
-      this.preload();
-      return true; // do render
+    } 
+    else if (this.state.loadedVideo !== 0) {
+      console.log("Needs to be reset before rerender")
+      // reset state, will trigger a rerender and load next iteration
+      this.setState(this.getInitialState()); 
+      return false;
+    } 
+    else { 
+      console.log("Preloading...");
+      this.preload(nextProps.entries); 
+      return true;
     }
   },
 
-  preload: function() {
-    var entries = this.props.entries;
+  preload: function(entries) {
     console.log("Preloading for " + entries.length + " entries");
     for(var i=0; i < entries.length; i++) {
       var entry = entries[i];
       if (!entry["defined"]) {
-        // if entry isn't in dictionary, we need audio
-        this.getAudio(entry, i);
+        this.getAudio(entry, i); // if entry isn't in dictionary, we need audio
       }
-      // we always need video
-      this.getVideo(entry, i);
+      this.getVideo(entry, i); // we always need video
     }
   },
 
@@ -47,7 +110,6 @@ var Player = React.createClass({
   getVideo: function(entry, i) {
     var url = entry["video_url"];
 
-    // MP4 if it plays it, WebM if not
     if(this.vidNode().canPlayType && this.vidNode().canPlayType('video/mp4').replace(/no/, '')) {
         url = url + ".mp4";
     } else {
@@ -98,53 +160,41 @@ var Player = React.createClass({
     xhr.send();
   },
 
-  canPlay: function() {
-    var loaded = this.state.loadedAudio + this.state.loadedVideo;
-    console.log("loaded: " + loaded);
-    var target = this.props.entries.length + this.props.audioNeeded;
-    console.log("target: " + target);
-    return loaded === target 
-  },
-
+  //////////////////////////////////////////////////  
+  // PLAY FUNCTIONALITY
+  //////////////////////////////////////////////////  
   playMashup: function() {
     var playIndex = this.state.playIndex;
+    var playlistLength = this.state.videoPlaylist.length;
 
     // Set new index
-    if (playIndex >= videoPlaylist.length) { playIndex = 0; } 
+    if (playIndex >= this.state.videoPlaylist) { playIndex = 0; } 
     else { playIndex += 1; }
 
     // Set bindings
     if (this.videoHasSeparateAudio()) { this.bindAudio(); } 
     this.incrementWhenFinished(playIndex);
+    this.vidNode().play();
   },
 
   incrementWhenFinished: function(playIndex) {
     var player = this;
-    player.$video.bind('ended', function () {
-      player.$video.unbind('ended');
+    player.$video().bind('ended', function () {
+      // binding video
+      player.$video().unbind('ended');
       player.incrementIndices(playIndex);
+      player.playMashup();
     });
   },
 
   bindAudio: function(){
     var player = this;
-     player.$video.bind('start', function() {
-        player.$video.unbind('start');
+     player.$video().bind('start', function() {
+        // playing audio bound to start of video
+        player.$video().unbind('start');
         player.audioNode().play();
       });
   },
-
-  audioNode: function() {
-    if(this.refs.audio){ return this.refs.audio.getDOMNode(); }
-  },
-
-  vidNode: function() {
-    if(this.refs.video) { return this.refs.video.getDOMNode(); }
-  },
-  $video: function() {
-    return $('#' + vidNode().id);
-  },
-
   incrementIndices: function(playIndex) {
       this.setState({
         videoPlaylist: this.state.videoPlaylist,
@@ -154,33 +204,15 @@ var Player = React.createClass({
         loadedAudio: this.state.loadedAudio
       });
   },
-  currentVideo: function() {
-    var playlist = this.state.videoPlaylist;
-    var index = this.state.playIndex;
-    return playlist[index];
-  },
-  currentAudio: function() {
-      var playlist = this.state.audioPlaylist;
-      var index = this.state.playIndex;
-      return playlist[index];
-  },
-  currentVideoSrc: function() {
-    if (this.currentVideo()) { return this.currentVideo().media; } 
-    else { return ""; }
-  },
-  currentAudioSrc: function() {
-    if (this.currentAudio()) { return this.currentAudio().media; }
-    else { return ""; }
-  },
-  videoHasSeparateAudio: function(){
-    if(this.currentVideo())
-      return !this.currentVideo().defined
-  },
+
+  //////////////////////////////////////////////////
+  // RENDER
+  //////////////////////////////////////////////////
   render: function() {
-    console.log("calling render");
+    console.log("Rendering");
     if (this.canPlay()) { 
       console.log("can play");
-      if (this.vidNode()) { this.vidNode().play(); }
+      if (this.vidNode()) { this.playMashup(); }
     } else {
       console.log("can't play");
     }
