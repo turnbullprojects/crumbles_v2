@@ -127,16 +127,8 @@ button {
 // MEDIA
 //////////////////////////////////////////////////
 
-video { width: $width }
-#play-btn { 
-  width: 200px; 
-  height: 80px; 
-  padding: 30px;
-  margin: 0 auto;
-  margin-bottom: 200px;
-  color: white;
+video { width: $width; height: 360px; }
 
-}
 .active { 
   background: $green;
   cursor: pointer;
