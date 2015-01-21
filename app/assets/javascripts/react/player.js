@@ -3,7 +3,7 @@ var Player = React.createClass({
 
   getInitialState: function() {
     return { 
-      ready: false,
+      canPlay: false,
       videoPlaylist: [], 
       audioPlaylist: [],
       videosPlayed: [],
@@ -25,7 +25,7 @@ var Player = React.createClass({
     } else {
       // update state to reflect 0 loaded
       this.setState({
-        ready: false,
+        canPlay: false,
         videoPlaylist: [],
         audioPlaylist: [],
         videosPlayed: [],
@@ -117,14 +117,15 @@ var Player = React.createClass({
 
         if(loaded === target) { 
           // Everything is loaded! 
+          console.log("loaded up");
           
           // Audio Playlist is in the rightorder, 
           // but it holds nil for the empy values
           audioPlaylist = _.compact(audioPlaylist);
 
-          // Set ready to true and play
+          // Set canPlay to true and play
           player.setState({
-            ready: true,
+            canPlay: true,
             videoPlaylist: videoPlaylist,
             audioPlaylist: audioPlaylist,
             videosPlayed: [],
@@ -132,12 +133,16 @@ var Player = React.createClass({
             loadedVideo: loadedVideo,
             loadedAudio: loadedAudio
           });
-          player.playMashup();
+
+          var vidTag = player.refs.video.getDOMNode();
+          vidTag.poster = player.props.entries[0]["thumbnail"];
+          console.log("end of this, canPlay is: " + player.state.canPlay);
+          player.refs.btn.getDOMNode().className = "active"
 
         } else if (loaded < target) {
           // Still more to load...
           player.setState({
-            ready: false,
+            canPlay: false,
             videoPlaylist: videoPlaylist,
             audioPlaylist: audioPlaylist,
             videosPlayed: [],
@@ -154,6 +159,28 @@ var Player = React.createClass({
 
   },
 
+  playOrReplay: function(){
+    console.log("Play or Replay");
+    if(this.state.canPlay === true) {
+      if(this.state.videoPlaylist.count > 0) {
+        this.playMashup();
+      } 
+      else {
+        // Move from played to playlist
+        this.setState({
+          canPlay: true,
+          videoPlaylist: this.state.videosPlayed,
+          audioPlaylist: this.state.audioPlayed,
+          videosPlayed: [],
+          audioPlayed: [],
+          loadedVideo: this.state.loadedVideo,
+          loadedAudio: this.state.loadedAudio
+        });
+        // then play 
+        this.playMashup();
+      }
+    }
+  },
 
   playMashup: function() {
     var player = this;
@@ -202,7 +229,7 @@ var Player = React.createClass({
 
       // Save State
       this.setState({
-        ready: true,
+        canPlay: true,
         videoPlaylist: videoPlaylist,
         audioPlaylist: this.state.audioPlaylist,
         videosPlayed: videosPlayed,
@@ -222,9 +249,17 @@ var Player = React.createClass({
   render: function() {
     this.preload();
     return (
-      <div idName="player">
-        <video ref='video' type='video/mp4' id='master-vid'></video>
-        <audio ref="audio"></audio>
+      <div idName="playerAndControls" >
+        <div idName="player">
+          <video ref='video' type='video/mp4' id='master-vid'></video>
+          <audio ref="audio"></audio>
+        </div>
+        <div idName="controls">
+          <div ref="btn" id="play-btn" className="inactive" onClick={this.playOrReplay}>
+            Play
+          </div>
+
+        </div>
       </div>
     );
   }

@@ -9,6 +9,7 @@ var TextBox = React.createClass({
     var text = this.getPhraseFromUrl();
     var inputNode = this.refs.box.getDOMNode();
     inputNode.innerHTML = text;
+    this.handleInput();
   },
 
   getPhraseFromUrl: function() {
@@ -55,7 +56,7 @@ var TextBox = React.createClass({
     return sanitized;
   },
 
-  handleInput: function(e){
+  handleInput: function(){
 
     var wordsLeft = this.state.wordsLeft
 
@@ -89,27 +90,19 @@ var TextBox = React.createClass({
       var el = this.refs.box.getDOMNode();
       var innerText = this.refs.box.getDOMNode().innerHTML;
       var words = this.sanitize(innerText).split(" ");
-      console.log("checking undefined");
       for(var i=0; i < words.length; i++) {
-        console.log("loop");
         var word = words[i];
         // Check if over word count
         if (i > 25) {
-          console.log("disabled word: " + w);
-          console.log("count is over 25; currently: " + i);
           words[i] = "<span class='disabled'>" + word + "</span>";
-          console.log("continuing");
           continue;
         }
-        console.log("not continuing");
         // Check if defined
         for(var j=0;j < entries.length; j++) {
 
           var entry = entries[j];
-          console.log(entry[j] + " is defined? " + entry["defined"]);
           if(entry["defined"] === false) {
             var w = entry["word"];
-            console.log("UNDEFINED word: " + w);
             var regex = RegExp(w,"ig");
             if(word.match(regex)) {
               words[i] = "<span class='undefined'>" + word + "</span>"
@@ -128,25 +121,31 @@ var TextBox = React.createClass({
 
 
   saveCursorPositionAndUpdateHTML: function(el, newHTML) {
-      // Setup range
-      var sel = rangy.getSelection(el);
-      var range = sel.getRangeAt(0);
+      try {
+        // Setup range
+        var sel = rangy.getSelection(el);
+          var range = sel.getRangeAt(0);
 
+        // Get cursor position
+        var rangePrecedingBoundary = range.cloneRange();
+        rangePrecedingBoundary.setStart(el, 0);
+        var selEndOffset = rangePrecedingBoundary.text().length;
+        rangePrecedingBoundary.setEnd(range.startContainer, range.startOffset);
+        var selStartOffset = rangePrecedingBoundary.text().length;
+        rangePrecedingBoundary.detach();
 
-      // Get cursor position
-      var rangePrecedingBoundary = range.cloneRange();
-      rangePrecedingBoundary.setStart(el, 0);
-      var selEndOffset = rangePrecedingBoundary.text().length;
-      rangePrecedingBoundary.setEnd(range.startContainer, range.startOffset);
-      var selStartOffset = rangePrecedingBoundary.text().length;
-      rangePrecedingBoundary.detach();
+        // set html
+        el.innerHTML = newHTML
 
-      // set html
-      el.innerHTML = newHTML
-
-      // Put cursor back
-      range.selectCharacters(el, selStartOffset, selEndOffset);
-      sel.setSingleRange(range);
+        // Put cursor back
+        range.selectCharacters(el, selStartOffset, selEndOffset);
+        sel.setSingleRange(range);
+      }
+      catch (e)  {
+        // Throws a DOMExceptionError on first load
+        // because there's no cursor active
+        // Not a problem
+      }
 
   },
 

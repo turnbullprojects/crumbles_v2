@@ -7,6 +7,7 @@ var MashupContainer = React.createClass({
     } 
   },
  
+
   handlePhraseInput: function(words) {
 
     var newAudioNeeded = 0;
