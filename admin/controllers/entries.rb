@@ -23,7 +23,7 @@ Crumbles::Admin.controllers :entries do
     @success = ""
     @error = ""
     videos.each do |video|
-      logger.info "Video is #{video}"
+      logger.debug "Video is #{video}"
       file = video[:tempfile]
       entry_name = video[:filename].gsub(/\.(.*)/,"")
       panda = Panda::Video.create(file: file)
@@ -38,6 +38,8 @@ Crumbles::Admin.controllers :entries do
         logger.info "Not Unique"
         @error << "\n#{entry.name} is a duplicate to another word already in this dictionary."
       end
+      logger.debug "Errors: #{@error}"
+      logger.debug "Success: #{@success}"
         
       @title = pat(:create_title, :model => 'entry')
     end
