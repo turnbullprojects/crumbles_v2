@@ -60,17 +60,6 @@ var Player = React.createClass({displayName: "Player",
     return this.currentVideo() ? !this.currentVideo().defined : false
   },
 
-  showLoader: function() {
-    if(this.refs.loader) {
-      this.refs.loader.getDOMNode().className = "loader"
-    }
-  },
-
-  hideLoader: function() {
-    if(this.refs.loader) {
-      this.refs.loader.getDOMNode().className = "loader hide"
-    }
-  },
   canPlay: function() {
     var loaded = this.state.loadedAudio + this.state.loadedVideo;
     console.log("loaded: " + loaded);
@@ -106,9 +95,7 @@ var Player = React.createClass({displayName: "Player",
   },
 
   preload: function(entries) {
-    
     console.log("Preloading for " + entries.length + " entries");
-    this.showLoader();
     for(var i=0; i < entries.length; i++) {
       var entry = entries[i];
       if (!entry["defined"]) {
@@ -271,17 +258,15 @@ var Player = React.createClass({displayName: "Player",
   //////////////////////////////////////////////////
   render: function() {
     console.log("rendering");
-    var loader = "loader";
     if (this.canPlay()) { 
       console.log("can play");
       if (this.vidNode()) { this.playMashup(); }
-      loader = "loader hide";
     } 
     return (
       React.createElement("div", {idName: "player"}, 
         React.createElement("video", {ref: "video", src: this.currentVideoSrc(), poster: this.currentVideoImg(), type: "video/mp4", id: "master-vid"}), 
         React.createElement("audio", {ref: "audio", src: this.currentAudioSrc()}), 
-        React.createElement("div", {ref: "loader", className: loader}), 
+        React.createElement("div", {ref: "loader", className: "loader hide"}), 
         React.createElement("div", {ref: "button", className: "playButton hide", onClick: this.replay}, 
           React.createElement("img", {src: "./assets/play.svg"})
         )

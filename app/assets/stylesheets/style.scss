@@ -370,6 +370,7 @@ $loader-diameter: .75em;
 
   [data-state = loading] & { display: block; }
 }
+.loader.hide { display: none; }
 .playButton {
   $diameter: 80px;
   background-color: rgba($light-grey,.85);
