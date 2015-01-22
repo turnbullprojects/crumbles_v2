@@ -19,8 +19,7 @@ Padrino.require_dependencies "#{Padrino.root}/config/initializers/**/*.rb"
 ##
 # ## Enable devel logging
 #
-# Padrino::Logger::Config[:development][:log_level]  = :devel
-# Padrino::Logger::Config[:development][:log_static] = true
+Padrino::Logger::Config[:production][:log_level]  = :debug
 #
 # ## Configure your I18n
 #
