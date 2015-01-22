@@ -5,3 +5,14 @@
 .tabs-content
   = form_for :entry, url(:entries, :create), :class => 'form-horizontal', :multipart => true do |f|
     =partial 'entries/form', :locals => { :f => f, :dictionaries => @dictionaries }
+.results
+  .success{ style: "width: 400px; margin:20px; display: inline-block;"}
+    %h2 New Entries (Saved)
+    %ul
+      - @success.each do |success|
+        %li=success
+  .failure{ style: "width: 400px; margin:20px; display: inline-block;"}
+    %h2 Duplicates (Ignored)
+      - @error.each do |error|
+        %li=error
+

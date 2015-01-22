@@ -20,8 +20,8 @@ Crumbles::Admin.controllers :entries do
     videos = base[:video]
     logger.info videos
     logger.info videos.count
-    @success = ""
-    @error = ""
+    @success = []
+    @error = []
     videos.each do |video|
       logger.debug "Video is #{video}"
       file = video[:tempfile]
@@ -30,20 +30,18 @@ Crumbles::Admin.controllers :entries do
       entry = Entry.new(panda_video_id: panda.id, dictionary_id: @dictionary_id, name: entry_name)
       begin
         if entry.save
-          @success << "\n#{entry.name} saved"
+          @success << "#{entry.name}"
         else
-          @error << "\n#{entry.name} not saved."
+          @error << "#{entry.name}"
         end
       rescue ActiveRecord::RecordNotUnique
         logger.info "Not Unique"
-        @error << "\n#{entry.name} is a duplicate to another word already in this dictionary."
+        @error << "#{entry.name}"
       end
-      logger.debug "Errors: #{@error}"
-      logger.debug "Success: #{@success}"
         
       @title = pat(:create_title, :model => 'entry')
     end
-    params[:save_and_continue] ? redirect(url(:entries, :index)) : redirect(url(:entries, :new))
+    render 'entries/new'
 
   end
 
