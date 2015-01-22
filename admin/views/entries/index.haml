@@ -28,16 +28,7 @@
                       .btn.btn-default.btn-small.cancel=pat(:cancel)
         %th.header= mat(:entry, :id)
         %th.header= mat(:entry, :name)
-        %th.header= mat(:entry, :dictionary_id)
-        %th.header= mat(:entry, :base_url)
-        %th.header= mat(:entry, :thumbnail_small)
-        %th.header= mat(:entry, :thumbnail_medium)
-        %th.header= mat(:entry, :created_at)
-        %th.header= mat(:entry, :updated_at)
-        %th.header= mat(:entry, :video_file_name)
-        %th.header= mat(:entry, :video_content_type)
-        %th.header= mat(:entry, :video_file_size)
-        %th.header= mat(:entry, :video_updated_at)
+        %th.header= mat(:entry, :dictionary)
         %th.header.list-row-action-header
 
     %tbody
@@ -47,16 +38,7 @@
             =check_box_tag 'entry_ids[]', :value => entry.id, :class => 'list-selectable-checkbox'
           %td.list-column=entry.id
           %td.list-column=entry.name
-          %td.list-column=entry.dictionary_id
-          %td.list-column=entry.base_url
-          %td.list-column=entry.thumbnail_small
-          %td.list-column=entry.thumbnail_medium
-          %td.list-column=time_ago_in_words entry.created_at
-          %td.list-column=time_ago_in_words entry.updated_at
-          %td.list-column=entry.video_file_name
-          %td.list-column=entry.video_content_type
-          %td.list-column=entry.video_file_size
-          %td.list-column=entry.video_updated_at
+          %td.list-column=entry.dictionary.name
           %td.list-column.list-row-action
             .list-row-action-wrapper
               =link_to tag_icon(:edit), :href => url(:entries, :edit, :id => entry.id), :rel => :tooltip, :title => "#{pat(:edit)} entry", :class => 'list-row-action-wrapper-link'
