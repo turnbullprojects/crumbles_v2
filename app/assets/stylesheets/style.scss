@@ -11,8 +11,8 @@ html { height: 100%; }
 body {
   color: $dark-grey;
   min-height: 100%;
+  background: #1f1f1f;
 }
-
 .clear {
   clear: both;
 }
@@ -48,6 +48,7 @@ h1.crumbles {
 }
 
 .thirtylabs {
+  color: $light-grey;
   @extend %centered;
   display: block;
   width: 185px;
@@ -94,7 +95,8 @@ button {
   border-radius: .33em;
   @extend %centered;
   @include box-shadow(inset 0 0 5px rgba(black, .2));
-  background-color: $light-grey;
+  //background-color: $light-grey;
+  background-color: #aaa;
   font-size: 24px;
   line-height: 1.2;
   min-height: 3.1em;
@@ -127,14 +129,6 @@ button {
 
 video { width: $width; height: 360px; }
 
-.active { 
-  background: $green;
-  cursor: pointer;
-}
-.inactive {
-  background: $grey;
-  cursor: normal;
-}
 //////////////////////////////////////////////////
 // DICTIONARY SIDEBAR
 //////////////////////////////////////////////////
@@ -484,7 +478,9 @@ $loader-diameter: .75em;
     width: 100%;
     float: left;
   }
-  .thirty-labs { margin-bottom: 0px; }
+  .thirty-labs { 
+    margin-bottom: 0px; 
+  }
   #main {
     width: $width;
     float: left;
@@ -497,4 +493,7 @@ $loader-diameter: .75em;
   #mashup-input, #words-left { width: $width; }
 }
 
+%footer {
+  margin-top: 60px;
+}
 
