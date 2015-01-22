@@ -26,8 +26,11 @@ Crumbles::Admin.controllers :entries do
       logger.debug "Video is #{video}"
       file = video[:tempfile]
       entry_name = video[:filename].gsub(/\.(.*)/,"")
-      panda = Panda::Video.create(file: file)
-      entry = Entry.new(panda_video_id: panda.id, dictionary_id: @dictionary_id, name: entry_name)
+      entry = Entry.new(dictionary_id: @dictionary_id, name: entry_name)
+      if entry.valid?
+        panda = Panda::Video.create(file: file)
+        entry.panda_video_id = panda.id
+      end
       begin
         if entry.save
           @success << "#{entry.name}"
