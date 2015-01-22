@@ -11,4 +11,4 @@ Sprockets.append_path('/dictionaries/')
 run Rack::URLMap.new \
   "/"       => Padrino.application,
   "/assets" => Padrino::Assets.environment
-
+$stdout.sync = true
