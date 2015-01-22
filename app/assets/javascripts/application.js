@@ -2,15 +2,14 @@
 //=require lib/rangy-core
 //=require lib/rangy-textrange
 //=require lib/rangy-cssclassapplier
-//=require react/word_count
-//=require react/text_box
-//=require react/phrase_input
-//=require react/player
-//=require react/mashup_container
+//=require compiled-react/word_count
+//=require compiled-react/text_box
+//=require compiled-react/phrase_input
+//=require compiled-react/player
+//=require compiled-react/mashup_container
+//=require compiled-react/starter
 //=require standard
 
-React.render(
-  <MashupContainer dictionary={StandardDict} />, 
-  document.getElementById("main")
-);
+$(document).ready(function(){console.log("loaded");});
+
 
