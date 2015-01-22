@@ -20,7 +20,9 @@ gem 'racksh'
 gem 'bcrypt'
 gem 'activerecord', '>= 3.1', :require => 'active_record'
 gem 'pg'
-gem 'aws-sdk', '~> 1.5.7'
+gem 'aws-sdk-v1'
+gem 'aws-sdk', '2.0.6.pre'
+
 
 # Uploads
 gem 'panda', '~> 1.6.0'
