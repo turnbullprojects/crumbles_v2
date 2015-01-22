@@ -353,9 +353,7 @@ $loader-diameter: .75em;
 @-moz-keyframes loader { @include loader-keyframes; }
 @-ms-keyframes loader { @include loader-keyframes; }
 @keyframes loader { @include loader-keyframes; }
-.loader, .playButton {
-  display: none;
-}
+
 .loader {
   width: $loader-diameter; height: $loader-diameter;
   background-color: $light-grey;
@@ -379,6 +377,7 @@ $loader-diameter: .75em;
   height: $diameter;
   border-radius: $diameter / 2;
   cursor: pointer;
+  display: block;
   @include center($diameter);
 
   img {
@@ -399,9 +398,8 @@ $loader-diameter: .75em;
       margin-top: -18px;
     }
   }
-
-  [data-state = playable] & { display: block; }
 }
+.playButton.hide { display: none; }
 #playbackElements {
   @extend %dimensions;
   left: 50%;

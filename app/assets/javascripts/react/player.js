@@ -167,18 +167,29 @@ var Player = React.createClass({
 //////////////////////////////////////////////////  
 // PLAY FUNCTIONALITY
 //////////////////////////////////////////////////  
+
   playMashup: function() {
     var playIndex = this.state.playIndex;
     var playlistLength = this.state.videoPlaylist.length;
 
-    // Set new index
-    if (playIndex >= this.state.videoPlaylist) { playIndex = 0; } 
-    else { playIndex += 1; }
+    console.log("play mashup");
+    // Check if done
+    if (playIndex >= playlistLength) { 
+      console.log("play index bigger than length");
+      playIndex = 0; 
+      this.refs.button.getDOMNode().className = "playButton"
+    } 
+    else { 
+      console.log("play index increment");
+      playIndex += 1; 
+      this.refs.button.getDOMNode().className = "playButton hide"
+    }
 
     // Set bindings
     this.setVideoAudio();
     this.incrementWhenFinished(playIndex);
     this.audioNode().play();
+    console.log("about to play " + this.vidNode().src);
     this.vidNode().play();
   },
 
@@ -222,17 +233,42 @@ var Player = React.createClass({
       });
   },
 
+  replay: function() {
+    var player = this;
+    this.setState({
+      videoPlaylist: this.state.videoPlaylist,
+      audioPlaylist: this.state.audioPlaylist,
+      playIndex: 0,
+      loadedVideo: this.state.loadedVideo,
+      loadedAudio: this.state.loadedAudio
+    });
+    // ALERT: HACKY FUCKING CODE RIGHT HERE
+    window.setTimeout(function() { 
+      // playMashup runs but doesn't play the video
+      // but it's all set up to run, we just need to call it
+      // after the event listeners are set
+      player.vidNode().play();
+    }, 500);
+    // END HACKY CODE
+  },
+
+
   //////////////////////////////////////////////////
   // RENDER
   //////////////////////////////////////////////////
   render: function() {
+    console.log("rendering");
     if (this.canPlay()) { 
+      console.log("can play");
       if (this.vidNode()) { this.playMashup(); }
     } 
     return (
       <div idName="player">
         <video ref='video' src={this.currentVideoSrc()} poster={this.currentVideoImg()} type='video/mp4' id='master-vid'></video>
         <audio ref="audio" src={this.currentAudioSrc()}></audio>
+        <div ref="button" className="playButton hide" onClick={this.replay}>
+          <img src="./assets/play.svg" />
+        </div>
       </div>
     );
   }
