@@ -1,3 +1,6 @@
+PADRINO_LOGGER = { :production => { :log_level => :debug, :stream => :stdout }}
+
+
 # Defines our constants
 RACK_ENV = ENV['RACK_ENV'] ||= 'development'  unless defined?(RACK_ENV)
 PADRINO_ROOT = File.expand_path('../..', __FILE__) unless defined?(PADRINO_ROOT)
@@ -15,14 +18,6 @@ Dotenv.load ".env.#{Padrino.env}"
 Padrino.require_dependencies "#{Padrino.root}/config/initializers/**/*.rb"
 
 
-
-##
-# ## Enable devel logging
-#
-Padrino::Logger::Config[:production][:log_level]  = :debug
-#
-# ## Configure your I18n
-#
 # I18n.default_locale = :en
 # I18n.enforce_available_locales = false
 #
