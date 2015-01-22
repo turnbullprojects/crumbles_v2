@@ -63,8 +63,8 @@ var TextBox = React.createClass({
     window.clearTimeout(this.state.timeoutIdOne);
     window.clearTimeout(this.state.timeoutIdTwo);
 
-    timeoutIdOne = window.setTimeout(this.processInput, 1500); 
-    timeoutIdTwo = window.setTimeout(this.markUndefined, 1500); 
+    timeoutIdOne = window.setTimeout(this.processInput, 1000); 
+    timeoutIdTwo = window.setTimeout(this.markUndefined, 1000); 
 
     this.setState({ timeoutIdOne: timeoutIdOne, 
                     timeoutIdTwo: timeoutIdTwo,
