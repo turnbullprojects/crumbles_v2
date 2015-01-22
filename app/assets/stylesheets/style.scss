@@ -31,23 +31,16 @@ body {
   top: 0;
   bottom: 0;
 }
-
 //////////////////////////////////////////////////
 // Logo
 //////////////////////////////////////////////////
 
-.header {
-  position: fixed;
-  left: 20px;
-  top: 8px;
-  z-index: 1000;
-}
 
 h1.crumbles {
   height: 46px;
   text-indent: -9999em;
   background: {
-    image: url(logo.png);
+    image: url(/assets/logo.png);
     position: center 0;
     repeat: no-repeat;
   }
@@ -90,9 +83,13 @@ button {
   &:active, &:focus { outline: none; }
 }
 
+
 //////////////////////////////////////////////////
 // INPUT
 //////////////////////////////////////////////////
+#input-container {
+  margin-bottom: 20px;
+}
 #mashup-input {
   border-radius: .33em;
   @extend %centered;
@@ -111,6 +108,7 @@ button {
 
 // Words left
 #words-left {
+  margin-top: 8px;
   @extend %centered;
   color: $grey;
   font: {
@@ -322,7 +320,7 @@ video { width: $width; height: 360px; }
 }
 #background {
   @extend %dimensions;
-  background-image: url(video_placeholder.png);
+  background-image: url(/assets/video_placeholder.png);
   display: block;
   margin: 2em auto;
 }
@@ -464,3 +462,39 @@ $loader-diameter: .75em;
 
   &.shown { opacity: 1; }
 }
+
+//////////////////////////////////////////////////
+// STRUCTURE
+//////////////////////////////////////////////////
+
+#left {
+  width: 200px;
+  float: left;
+}
+#main {
+  width: $width;
+  float: left;
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  $width: 90%;
+  #left {
+    width: 100%;
+    float: left;
+  }
+  .thirty-labs { margin-bottom: 0px; }
+  #main {
+    width: $width;
+    float: left;
+    margin-left: 40px;
+    margin-top: 20px;
+  }
+  video { width: $width; height: auto; }
+  #input-container { margin-bottom: 10px; }
+
+  #mashup-input, #words-left { width: $width; }
+}
+
+

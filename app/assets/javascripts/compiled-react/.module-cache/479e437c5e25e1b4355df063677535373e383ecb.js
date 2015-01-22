@@ -159,9 +159,9 @@ var TextBox = React.createClass({displayName: "TextBox",
   render: function() {
 
     return (
-      React.createElement("div", {idName: "phrase-input"}, 
-      React.createElement("div", {id: "mashup-input", ref: "box", contentEditable: "true", onKeyUp: this.handleInput}), 
-      React.createElement(WordCount, {wordLeft: this.state.wordsLeft})
+      React.createElement("div", {id: "input-container"});
+      React.createElement("div", {id: "mashup-input", ref: "box", contentEditable: "true", onKeyUp: this.handleInput});
+      React.createElement(WordCount, {wordLeft: this.state.wordsLeft});
       )
     );
   }

@@ -21,7 +21,8 @@ var PhraseInput = React.createClass({displayName: "PhraseInput",
 
   render: function() {
     return (
-      React.createElement(TextBox, {onWordInput: this.handleText, entries: this.props.entries})
+      React.createElement("div", {id: "input-container"});
+      React.createElement(TextBox, {onWordInput: this.handleText, entries: this.props.entries});
     );
   }
 });
