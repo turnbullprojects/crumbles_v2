@@ -39,8 +39,12 @@ Crumbles::Admin.controllers :entries do
         @error << "#{entry.name}"
       end
         
-      @title = pat(:create_title, :model => 'entry')
     end
+    @title = pat(:new_title, :model => 'entry')
+    @entry = Entry.new
+    @dictionaries = Dictionary.all
+    @bulk = true
+ 
     render 'entries/new'
 
   end
