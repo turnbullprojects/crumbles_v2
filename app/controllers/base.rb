@@ -10,9 +10,15 @@ Crumbles::App.controllers :main do
     render "react"
   end
 
-  get :dictionary, map: "/dictionary/:dictionary" do 
+  get :dictionaries, map: "/dictionaries", provides: :json do
     content_type :json
-    @dictionary = Dictionary.find_by_name(params[:dictionary]) || Dictionary.new
+    @dictionaries = Dictionary.all
+    return @dictionaries.map{|d| {name: d.name, id: d.id } }.to_json
+  end
+
+  get :dictionary, map: "/dictionary/:id", provides: :json do 
+    content_type :json
+    @dictionary = Dictionary.find(params[:id])
     return @dictionary.json_friendly_hash.to_json
   end
 

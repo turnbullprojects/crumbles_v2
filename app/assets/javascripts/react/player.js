@@ -42,7 +42,6 @@ var Player = React.createClass({
   },
   currentVideoImg: function() {
     if (this.currentVideo()) {
-      console.log(this.currentVideo().image);
       return this.currentVideo().image;
     } 
     else if(this.props.entries[0]) {
@@ -73,9 +72,7 @@ var Player = React.createClass({
   },
   canPlay: function() {
     var loaded = this.state.loadedAudio + this.state.loadedVideo;
-    console.log("loaded: " + loaded);
     var target = this.props.entries.length + this.props.audioNeeded;
-    console.log("target: " + target);
     return loaded === target 
   },
 
@@ -88,7 +85,6 @@ var Player = React.createClass({
     var current = this.props.entries;
     var next = nextProps.entries;
 
-    console.log("running should component update");
     if (_.isEqual(current, next)) { 
       if(nextState.loadedVideo === 0) {
         this.preload(nextProps.entries);
@@ -107,7 +103,6 @@ var Player = React.createClass({
 
   preload: function(entries) {
     
-    console.log("Preloading for " + entries.length + " entries");
     this.showLoader();
     for(var i=0; i < entries.length; i++) {
       var entry = entries[i];
@@ -126,12 +121,12 @@ var Player = React.createClass({
   },
 
   getVideo: function(entry, i) {
-    var url = entry["video_url"];
+    var url;
 
     if(this.vidNode().canPlayType && this.vidNode().canPlayType('video/mp4').replace(/no/, '')) {
-        url = url + ".mp4";
+        url = entry["mp4"];
     } else {
-        url = url + ".webm";
+        url = entry["webm"];
     }
     this.getMedia(url, entry, i, true);
   },
@@ -159,7 +154,7 @@ var Player = React.createClass({
         var loadedAudio = player.state.loadedAudio;
 
         if (video) {
-          videoPlaylist[i] = { media: media, defined: entry["defined"], image: entry["thumbnail"] };
+          videoPlaylist[i] = { media: media, defined: entry["defined"], image: entry["screenshot"] };
           loadedVideo += 1;
         } else {
           audioPlaylist[i] = { media: media, defined: entry["defined"] };
@@ -185,15 +180,12 @@ var Player = React.createClass({
     var playIndex = this.state.playIndex;
     var playlistLength = this.state.videoPlaylist.length;
 
-    console.log("play mashup");
     // Check if done
     if (playIndex >= playlistLength) { 
-      console.log("play index bigger than length");
       playIndex = 0; 
       this.refs.button.getDOMNode().className = "playButton"
     } 
     else { 
-      console.log("play index increment");
       playIndex += 1; 
       this.refs.button.getDOMNode().className = "playButton hide"
     }
@@ -202,7 +194,6 @@ var Player = React.createClass({
     this.setVideoAudio();
     this.incrementWhenFinished(playIndex);
     this.audioNode().play();
-    console.log("about to play " + this.vidNode().src);
     this.vidNode().play();
   },
 
@@ -226,10 +217,8 @@ var Player = React.createClass({
   },
 
   bindAudio: function(){
-    console.log("binding audio");
     var player = this;
     player.$video().bind('start', function() {
-      console.log("video start event");
       // playing audio bound to start of video
       //player.$video().unbind('start');
       player.audioNode().play();
@@ -270,10 +259,8 @@ var Player = React.createClass({
   // RENDER
   //////////////////////////////////////////////////
   render: function() {
-    console.log("rendering");
     var loader = "loader";
     if (this.canPlay()) { 
-      console.log("can play");
       if (this.vidNode()) { this.playMashup(); }
       loader = "loader hide";
     } 

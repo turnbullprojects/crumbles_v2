@@ -15,12 +15,7 @@ class Dictionary < ActiveRecord::Base
   def format_entries
     formatted = {}
     self.entries.each do |e|
-      formatted[e.name] = { 
-        word: e.name,
-        thumbnail_small: e.thumbnail_medium,
-        thumbnail_medium: e.thumbnail_medium,
-        base_url: e.base_url
-      }
+      formatted[e.name] = e.jsonify
     end
     return formatted
   end

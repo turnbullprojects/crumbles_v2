@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 5) do
+ActiveRecord::Schema.define(version: 7) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(version: 5) do
     t.string   "thumbnail_medium"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "video_file_name"
-    t.string   "video_content_type"
-    t.integer  "video_file_size"
-    t.datetime "video_updated_at"
+    t.string   "panda_video_id"
+    t.string   "mp4"
+    t.string   "webm"
+    t.string   "screenshot"
   end
 
   add_index "entries", ["dictionary_id", "name"], name: "index_entries_on_dictionary_id_and_name", unique: true, using: :btree

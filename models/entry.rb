@@ -7,6 +7,7 @@ class Entry < ActiveRecord::Base
 
   before_save :get_file_name
   
+
   def panda_video
     if panda_video_id
       @panda_video ||= Panda::Video.find(panda_video_id)
@@ -19,6 +20,24 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def jsonify
+    if self.panda_video_id
+      return {
+        word: self.name,
+        screenshot: self.screenshot,
+        mp4: self.mp4,
+        webm: self.webm
+      }
+    else
+      return {
+        word: self.name,
+        screenshot: self.thumbnail_medium,
+        mp4: self.base_url + ".mp4",
+        webm: self.base_url + ".webm"
+      }
+    end
+  end
+ 
 
 
 end

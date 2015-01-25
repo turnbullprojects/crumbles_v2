@@ -21,9 +21,9 @@ var MashupContainer = React.createClass({
         newPhrase.push(oldPhrase[i]);
       } 
       else {
-        var entry = this.findInDictionary(StandardDict, word);
+        var entry = this.findInDictionary(this.props.dictionary, word);
         if (!entry) {
-          var undedfinedEntry = this.notInDictionary(StandardDict, word);
+          var undedfinedEntry = this.notInDictionary(this.props.dictionary, word);
           // clone or it will binds all undefined to final word used
           entry = _.clone(undedfinedEntry); 
           newAudioNeeded += 1
@@ -49,7 +49,7 @@ var MashupContainer = React.createClass({
   },
 
   notInDictionary: function(dictionary, word) {
-    var randomVideo = dictionary["entries"]["duck"];
+    var randomVideo = dictionary["entries"]["jury"];
     randomVideo["defined"] = false;
     randomVideo["word"] = word;
     return randomVideo;
@@ -59,9 +59,14 @@ var MashupContainer = React.createClass({
     var entries = [];
 
     return (
-      <div idName="mashup-container">
-        <PhraseInput entries={this.state.phrase} onInput={this.handlePhraseInput} />
-        <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
+      <div id="crumbles">
+        <div id="mashup-container">
+          <PhraseInput entries={this.state.phrase} onInput={this.handlePhraseInput} />
+          <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
+        </div>
+        <div id="word-list">
+          <WordList dictionary={this.props.dictionary} />
+        </div>
       </div>
     );
   }

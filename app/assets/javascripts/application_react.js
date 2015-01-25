@@ -6,11 +6,18 @@
 //=require react/text_box
 //=require react/phrase_input
 //=require react/player
+//=require react/word_list
+//=require react/word_listing
 //=require react/mashup_container
-//=require standard
 
-React.render(
-  <MashupContainer dictionary={StandardDict} />, 
-  document.getElementById("main")
-);
+$.get("/dictionary/2")
+.done(function(data) {
+  console.log(data);
+
+  React.render(
+    <MashupContainer dictionary={data} />, 
+    document.getElementById("main")
+  );
+
+});
 
