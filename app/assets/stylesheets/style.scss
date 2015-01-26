@@ -147,19 +147,22 @@ video { width: 90%; height: auto; }
   @extend %column;
   right: 0px;
   width: 408px;
-  height: 100vh;
+  height: 100%;
+  position:fixed;
   z-index: 1;
   overflow: scroll;
-  top:-20px;
+  top:96px;
   padding-bottom:20px;
 }
+#dictionary > div:last-child { margin-bottom: 300px; }
 
 #dictionarySelectionContainer {
   position: fixed;
-  height: 0px;
+  overflow: scroll;
   width: $dictionary-width;
   top: 0;
   right: 0;
+  padding-bottom:300px;
   background-color: $blue-grey;
   z-index: 10;
   color: white;
