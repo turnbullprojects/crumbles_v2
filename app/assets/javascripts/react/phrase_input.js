@@ -9,7 +9,7 @@ var PhraseInput = React.createClass({
   makeWords: function(text) {
     console.log(text);
     var noPunctuation = text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, " ");
-    var spacedOut = noPunctuation.replace(/[^[a-zA-Z\s]/g, '');
+    var spacedOut = noPunctuation.replace(/[^[a-zA-Z0-9\s]/g, '');
     var lowercase = spacedOut.toLowerCase();
     var words = lowercase.split(" ");
     var compacted = _.compact(words);

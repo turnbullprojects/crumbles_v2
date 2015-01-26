@@ -111,6 +111,7 @@ button {
   min-height: 3.1em;
   padding: .35em .6em;
   text-align: left;
+  width:90%;
 
   &:focus { outline: none; }
 }
@@ -119,6 +120,7 @@ button {
 
 // Words left
 #words-left {
+  width: 90%;
   margin-top: 8px;
   @extend %centered;
   color: $grey;
@@ -136,7 +138,7 @@ button {
 // MEDIA
 //////////////////////////////////////////////////
 
-video { width: $width; height: 360px; }
+video { width: 90%; height: auto; }
 
 //////////////////////////////////////////////////
 // DICTIONARY SIDEBAR
@@ -144,14 +146,17 @@ video { width: $width; height: 360px; }
 .dictionaryContainer {
   @extend %column;
   right: 0px;
-  width: $dictionary-offset;
-  height: 100%;
+  width: 408px;
+  height: 100vh;
   z-index: 1;
+  overflow: scroll;
+  top:-20px;
+  padding-bottom:20px;
 }
 
 #dictionarySelectionContainer {
   position: fixed;
-  height: 80px;
+  height: 0px;
   width: $dictionary-width;
   top: 0;
   right: 0;
@@ -188,9 +193,9 @@ video { width: $width; height: 360px; }
     linear-gradient(left, shade($blue-grey, 10%), $blue-grey 5px)
   );
   font-weight: 100;
-  padding: 35px 0;
+  padding: 15px 0;
   position: absolute;
-  top: 80px;
+  top: 0px;
   right: 0px;
   width: $dictionary-width;
 
@@ -226,6 +231,7 @@ video { width: $width; height: 360px; }
     size: $width $height;
   }
   border: 3px solid $red;
+  border-radius: 5px;
   display: none;
   position: absolute;
   z-index: 1;
@@ -497,13 +503,15 @@ $loader-diameter: .75em;
   .thirty-labs { 
     margin-bottom: 0px; 
   }
-  video { width: $width; height: auto; }
   #input-container { margin-bottom: 10px; }
 
-  #mashup-input, #words-left { width: $width; }
+  
+  #mashup-container, #mashup-input, #words-left,video { width: $width; }
+  .dictionaryContainer { display: none; }
 }
 
 %footer {
   margin-top: 60px;
 }
 
+.GoogleActiveViewClass { background: #000; }

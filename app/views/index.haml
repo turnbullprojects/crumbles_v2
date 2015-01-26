@@ -1,7 +1,7 @@
 !!! 5
 %html
   %head
-    %title Crumbles
+    %title Say It With Suits
     %link{href: "./assets/style.scss", media: "screen", rel: "stylesheet"}
     = favicon_tag "/assets/favicon.ico"
     / USA NETWORKS
@@ -17,14 +17,8 @@
       }
       genSetRandDARTNumber(); 
       document.write('<sc'+'ript language=\'JavaScript1.1\' src="http://ad.doubleclick.net/N2620/adj/nbcu.usa/suits_;site=usa;sect=suits;sub=;genre=;daypart=;!category=suits;!category=js;!category=usa;!category=noopapd;!category=noexpand;network=tvn;sz=728x90;tagtype=js;dcopt=ist;uri=;pos=1;tile=1;ord' + randDARTNumber + '?"></s'+'cript>');
-    %header
-      %h1#suits
-        WATCH
-        %span{class: "bold red"}
-          SUITS
-        WEDNESDAYS AT 10/9c ON USA
     #main
-
+    = partial "usa_footer"
 
 
     / Our JS

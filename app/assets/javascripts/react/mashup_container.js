@@ -54,19 +54,31 @@ var MashupContainer = React.createClass({
     randomVideo["word"] = word;
     return randomVideo;
   },
+  addWordFromList: function(entry){
+    var oldPhrase = this.state.phrase;
+    var newPhrase = oldPhrase.push(entry);
+    console.log("add word from list");
+    this.setState({ phrase: newPhrase, audioNeeded: this.state.audioNeeded });
+  },
 
   render: function() {
     var entries = [];
 
     return (
       <div id="crumbles">
-        <div id="word-list" className="dictionaryContainer">
+       <div id="word-list" className="dictionaryContainer">
           <div id="dictionary">
-            <WordList dictionary={this.props.dictionary} />
+            <WordList dictionary={this.props.dictionary} onButtonClick={this.addWordFromList}/>
           </div>
         </div>
  
         <div id="mashup-container">
+          <header>
+            <h1 id='suits'>
+              WATCH <span className='bold red'>SUITS</span> WEDNESDAYS AT 10/9c ON USA
+            </h1>
+          </header>
+   
           <PhraseInput entries={this.state.phrase} onInput={this.handlePhraseInput} />
           <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
         </div>

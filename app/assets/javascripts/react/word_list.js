@@ -7,11 +7,11 @@ var WordList = React.createClass({
 
     for(var i=0; i < keys.length; i++) {
       var entry = entries[keys[i]];
-      listings.push(<WordListing entry={entry} />);
+      listings.push(<WordListing entry={entry} onButtonClick={this.props.onButtonClick}/>);
     }
 
     return (
-      <div idName="words">
+      <div idName="words" >
         {listings}
       </div>
     );

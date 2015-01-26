@@ -237,21 +237,26 @@ var Player = React.createClass({
 
   replay: function() {
     var player = this;
-    this.setState({
-      videoPlaylist: this.state.videoPlaylist,
-      audioPlaylist: this.state.audioPlaylist,
-      playIndex: 0,
-      loadedVideo: this.state.loadedVideo,
-      loadedAudio: this.state.loadedAudio
-    });
-    // ALERT: HACKY FUCKING CODE RIGHT HERE
-    window.setTimeout(function() { 
-      // playMashup runs but doesn't play the video
-      // but it's all set up to run, we just need to call it
-      // after the event listeners are set
-      player.vidNode().play();
-    }, 500);
-    // END HACKY CODE
+    if (this.state.playIndex === 0) {
+      this.playMashup(); 
+    } else {
+      //Replay
+      this.setState({
+        videoPlaylist: this.state.videoPlaylist,
+        audioPlaylist: this.state.audioPlaylist,
+        playIndex: 0,
+        loadedVideo: this.state.loadedVideo,
+        loadedAudio: this.state.loadedAudio
+      });
+      window.setTimeout(function() { 
+        // playMashup runs but doesn't play the video
+        // but it's all set up to run, we just need to call it
+        // after the event listeners are set
+        var button = player.refs.button.getDOMNode();
+        button.click();
+      }, 100);
+      // END HACKY CODE
+    }
   },
 
 
@@ -260,16 +265,31 @@ var Player = React.createClass({
   //////////////////////////////////////////////////
   render: function() {
     var loader = "loader";
+    var button = "playButton hide"
+
+    var poster = this.currentVideoImg();
+    if(poster === undefined && this.props.entries.length > 0) {
+      poster = this.props.entries[0]["screenshot"];
+    }
+    
+
     if (this.canPlay()) { 
-      if (this.vidNode()) { this.playMashup(); }
+      if (this.vidNode()) { 
+        console.log("play index is: " + this.state.playIndex);
+        if(this.state.playIndex > 0) {
+          this.playMashup(); 
+        } else {
+          var button = "playButton"
+        }
+      }
       loader = "loader hide";
     } 
     return (
       <div idName="player">
-        <video ref='video' src={this.currentVideoSrc()} poster={this.currentVideoImg()} type='video/mp4' id='master-vid'></video>
+        <video ref='video' src={this.currentVideoSrc()} poster={poster} type='video/mp4' id='master-vid'></video>
         <audio ref="audio" src={this.currentAudioSrc()}></audio>
         <div ref="loader" className={loader} ></div>
-        <div ref="button" className="playButton hide" onClick={this.replay}>
+        <div ref="button" className={button} onClick={this.replay}>
           <img src="./assets/play.svg" />
         </div>
       </div>
