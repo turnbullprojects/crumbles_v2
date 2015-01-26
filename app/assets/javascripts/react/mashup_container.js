@@ -60,14 +60,17 @@ var MashupContainer = React.createClass({
 
     return (
       <div id="crumbles">
+        <div id="word-list" className="dictionaryContainer">
+          <div id="dictionary">
+            <WordList dictionary={this.props.dictionary} />
+          </div>
+        </div>
+ 
         <div id="mashup-container">
           <PhraseInput entries={this.state.phrase} onInput={this.handlePhraseInput} />
           <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
         </div>
-        <div id="word-list">
-          <WordList dictionary={this.props.dictionary} />
-        </div>
-      </div>
+     </div>
     );
   }
 });

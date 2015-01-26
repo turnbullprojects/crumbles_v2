@@ -31,6 +31,15 @@ body {
   top: 0;
   bottom: 0;
 }
+
+.bold { font-weight: bold;}
+.red {color: $red; }
+//////////////////////////////////////////////////
+// HEADER
+//////////////////////////////////////////////////
+
+h1#suits { color: white; size: 36px; }
+
 //////////////////////////////////////////////////
 // Logo
 //////////////////////////////////////////////////
@@ -136,7 +145,7 @@ video { width: $width; height: 360px; }
   @extend %column;
   right: 0px;
   width: $dictionary-offset;
-  max-height: 100%;
+  height: 100%;
   z-index: 1;
 }
 
@@ -146,7 +155,7 @@ video { width: $width; height: 360px; }
   width: $dictionary-width;
   top: 0;
   right: 0;
-  background-color: $dark-green;
+  background-color: $blue-grey;
   z-index: 10;
   color: white;
   p {
@@ -156,7 +165,7 @@ video { width: $width; height: 360px; }
     background: transparent;
     border: 0;
     border-radius: 0;
-    background-color: $darker-green;
+    background-color: $red;
     width: $dictionary-width - 20px;
     padding: 1px 11px;
     font-size: 18px;
@@ -176,7 +185,7 @@ video { width: $width; height: 360px; }
 #dictionary {
   background-color: $green;
   @include background-image(
-    linear-gradient(left, shade($green, 10%), $green 5px)
+    linear-gradient(left, shade($blue-grey, 10%), $blue-grey 5px)
   );
   font-weight: 100;
   padding: 35px 0;
@@ -186,9 +195,9 @@ video { width: $width; height: 360px; }
   width: $dictionary-width;
 
   button.insert-word {
-    background-color: $green;
+    background-color: $blue-grey;
     @include background-image(
-      linear-gradient(left, shade($green, 10%), $green 5px)
+      linear-gradient(left, shade($blue-grey, 10%), $blue-grey 5px)
     );
     border: none;
     color: white;
@@ -200,43 +209,47 @@ video { width: $width; height: 360px; }
 
     &:hover {
       @include background-image(
-        linear-gradient(left, shade($dark-green, 10%), $dark-green 5px)
+        linear-gradient(left, shade($red, 10%), $red 5px)
       );
     }
   }
 }
 .preview-image {
   $padding: 6px;
-  $width: 192px;
-  $height: 108px;
+  $width: 160px;
+  $height: 120px;
+  
   background: {
     color: #e6e6e6;
     position: $padding $padding;
     repeat: no-repeat;
     size: $width $height;
   }
+  border: 3px solid $red;
   display: none;
   position: absolute;
   z-index: 1;
   right: 100%;
   margin-right: 20px;
-  margin-top: -($height / 2) + ($padding * 2);
+  margin-top: -72px;
   width: 2 * $padding + $width;
   height: 2 * $padding + $height;
 
-  img { display: block; }
+  img { 
+    background: #000;
+    width: 100%;
+    height: 100%;
+    display: block; 
+  }
 
   &:after {
-    $triangle-size: 13px;
     content: '';
-    width: 0;
-    height: 0;
-    border-top: $triangle-size solid transparent;
-    border-bottom: $triangle-size solid transparent;
-    border-left: $triangle-size solid #e6e6e6;
+    width: 30px;
+    height: 28px;
+    background: $red;
     position: absolute;
     top: 50%; left: 100%;
-    margin-top: -15px;
+    margin-top: -22px;
   }
 
   .dictionary-button:hover & {
@@ -466,8 +479,11 @@ $loader-diameter: .75em;
   float: left;
 }
 #main {
+  width: 100%;
+}
+
+#mashup-container { 
   width: $width;
-  float: left;
   margin-left: 40px;
   margin-top: 20px;
 }
@@ -480,12 +496,6 @@ $loader-diameter: .75em;
   }
   .thirty-labs { 
     margin-bottom: 0px; 
-  }
-  #main {
-    width: $width;
-    float: left;
-    margin-left: 40px;
-    margin-top: 20px;
   }
   video { width: $width; height: auto; }
   #input-container { margin-bottom: 10px; }

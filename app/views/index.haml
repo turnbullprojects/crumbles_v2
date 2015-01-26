@@ -9,22 +9,21 @@
       @import url("http://www.usanetwork.com/sites/usanetwork/files/css/css_536568333d357cc97900601b78c8d6390f610f11110b9534442a4030df4ac16c.css");
 
   %body
-    #left
-      %h1.crumbles Crumbles
-      .thirtylabs
-        %span.created created at
-        %a{ href: "http://thirtylabs.com", target: "_blank"}
-          %img{ src: "assets/30L.svg" }
-
+    :javascript
+      var randDARTNumber=0;
+      function genSetRandDARTNumber()
+      {
+       randDARTNumber = Math.round(Math.random()*1000000000000);
+      }
+      genSetRandDARTNumber(); 
+      document.write('<sc'+'ript language=\'JavaScript1.1\' src="http://ad.doubleclick.net/N2620/adj/nbcu.usa/suits_;site=usa;sect=suits;sub=;genre=;daypart=;!category=suits;!category=js;!category=usa;!category=noopapd;!category=noexpand;network=tvn;sz=728x90;tagtype=js;dcopt=ist;uri=;pos=1;tile=1;ord' + randDARTNumber + '?"></s'+'cript>');
+    %header
+      %h1#suits
+        WATCH
+        %span{class: "bold red"}
+          SUITS
+        WEDNESDAYS AT 10/9c ON USA
     #main
-      #input-container
-        #mashup-input
-          Hang tight, we're loading your video now! 
-        #words-left
-      %div
-        %video{ poster: "http://df6s2wloldzyx.cloudfront.net/standard/crumbs/hello/hello-medium-res-00001.jpg" }
-        .loader
-    #right
 
 
 

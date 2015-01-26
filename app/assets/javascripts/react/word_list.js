@@ -11,9 +11,9 @@ var WordList = React.createClass({
     }
 
     return (
-      <ul idName="words">
+      <div idName="words">
         {listings}
-      </ul>
+      </div>
     );
   }
 
