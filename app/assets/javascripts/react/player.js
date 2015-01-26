@@ -267,12 +267,14 @@ var Player = React.createClass({
     var loader = "loader";
     var button = "playButton hide"
 
+    // show poster
     var poster = this.currentVideoImg();
     if(poster === undefined && this.props.entries.length > 0) {
       poster = this.props.entries[0]["screenshot"];
     }
     
 
+    // show playbutton
     if (this.canPlay()) { 
       if (this.vidNode()) { 
         console.log("play index is: " + this.state.playIndex);
@@ -284,6 +286,11 @@ var Player = React.createClass({
       }
       loader = "loader hide";
     } 
+
+    // no play button on iphone 
+    var iPhone = ( navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false );
+    if(iPhone) { button = "playButton hide"}
+
     return (
       <div idName="player">
         <video ref='video' src={this.currentVideoSrc()} poster={poster} type='video/mp4' id='master-vid'></video>

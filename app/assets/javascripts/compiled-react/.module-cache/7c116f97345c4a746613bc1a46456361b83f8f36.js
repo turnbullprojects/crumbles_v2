@@ -267,7 +267,6 @@ var Player = React.createClass({displayName: "Player",
     var loader = "loader";
     var button = "playButton hide"
 
-    // show poster
     var poster = this.currentVideoImg();
     if(poster === undefined && this.props.entries.length > 0) {
       poster = this.props.entries[0]["screenshot"];
