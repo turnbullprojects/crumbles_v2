@@ -1,5 +1,7 @@
 Crumbles::App.controllers :main do
   get :index, map: "/" do
+    cache_control :public, :max_age => 36000
+
     @title = "Crumbles"
     @description = "Crumbles are kinda like reaction GIFs with a way bigger vocabulary... and all you have to do to make one is type."
     @dictionaries = Dictionary.all
@@ -7,16 +9,22 @@ Crumbles::App.controllers :main do
   end
 
   get :react, map: "/react" do
+    cache_control :public, :max_age => 36000
+
     render "react"
   end
 
   get :dictionaries, map: "/dictionaries", provides: :json do
+    cache_control :public, :max_age => 36000
+
     content_type :json
     @dictionaries = Dictionary.all
     return @dictionaries.map{|d| {name: d.name, id: d.id } }.to_json
   end
 
   get :dictionary, map: "/dictionary/:id", provides: :json do 
+    cache_control :public, :max_age => 36000
+
     content_type :json
     @dictionary = Dictionary.find(params[:id])
     return @dictionary.json_friendly_hash.to_json

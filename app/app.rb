@@ -7,6 +7,7 @@ module Crumbles
     register Padrino::Helpers
     register Padrino::Assets
 
+    set :precompile_assets, [/^\w\.(?!(?:css|js)$)/i]
 
 
     enable :sessions
@@ -14,8 +15,8 @@ module Crumbles
     ##
     # Caching support.
     #
-    # register Padrino::Cache
-    # enable :caching
+    register Padrino::Cache
+    enable :caching
     #
     # You can customize caching store engines:
     #

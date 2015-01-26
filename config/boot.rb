@@ -1,4 +1,4 @@
-PADRINO_LOGGER = { :production => { :log_level => :debug, :stream => :stdout }}
+#PADRINO_LOGGER = { :production => { :log_level => :debug, :stream => :stdout }}
 
 
 # Defines our constants
