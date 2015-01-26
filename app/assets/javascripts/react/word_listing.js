@@ -11,6 +11,7 @@ var WordListing = React.createClass({
     // and pretend we put it in
     var keyUp = $.Event("keyup");
     input.trigger(keyUp);
+    this.props.onButtonClick(entry);
   },
   
   showThumb: function() {

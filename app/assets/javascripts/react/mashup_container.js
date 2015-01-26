@@ -55,10 +55,7 @@ var MashupContainer = React.createClass({
     return randomVideo;
   },
   addWordFromList: function(entry){
-    var oldPhrase = this.state.phrase;
-    var newPhrase = oldPhrase.push(entry);
-    console.log("add word from list");
-    this.setState({ phrase: newPhrase, audioNeeded: this.state.audioNeeded });
+    this.refs.input.refs.textbox.handleInput();
   },
 
   render: function() {
@@ -79,7 +76,7 @@ var MashupContainer = React.createClass({
             </h1>
           </header>
    
-          <PhraseInput entries={this.state.phrase} onInput={this.handlePhraseInput} />
+          <PhraseInput ref="input" entries={this.state.phrase} onInput={this.handlePhraseInput} />
           <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
         </div>
      </div>
