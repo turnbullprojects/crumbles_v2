@@ -1,4 +1,4 @@
-var Player = React.createClass({
+var Player = React.createClass({displayName: "Player",
  
   getInitialState: function() {
     return { 
@@ -70,11 +70,6 @@ var Player = React.createClass({
       this.refs.loader.getDOMNode().className = "loader hide"
     }
   },
-  hidePlayButton: function() {
-    if(this.refs.loader) {
-      this.refs.button.getDOMNode().className = "playButton hide"
-    }
-  },
   canPlay: function() {
     var loaded = this.state.loadedAudio + this.state.loadedVideo;
     var target = this.props.entries.length + this.props.audioNeeded;
@@ -109,7 +104,6 @@ var Player = React.createClass({
   preload: function(entries) {
     
     this.showLoader();
-    this.hidePlayButton();
     for(var i=0; i < entries.length; i++) {
       var entry = entries[i];
       if (!entry["defined"]) {
@@ -293,14 +287,14 @@ var Player = React.createClass({
     } 
 
     return (
-      <div idName="player">
-        <video ref='video' src={this.currentVideoSrc()} poster={poster} type='video/mp4' id='master-vid'></video>
-        <audio ref="audio" src={this.currentAudioSrc()}></audio>
-        <div ref="loader" className={loader} ></div>
-        <div ref="button" className={button} onClick={this.replay}>
-          <img src="./assets/play.svg" />
-        </div>
-      </div>
+      React.createElement("div", {idName: "player"}, 
+        React.createElement("video", {ref: "video", src: this.currentVideoSrc(), poster: poster, type: "video/mp4", id: "master-vid"}), 
+        React.createElement("audio", {ref: "audio", src: this.currentAudioSrc()}), 
+        React.createElement("div", {ref: "loader", className: loader}), 
+        React.createElement("div", {ref: "button", className: button, onClick: this.replay}, 
+          React.createElement("img", {src: "./assets/play.svg"})
+        )
+      )
     );
   }
 });

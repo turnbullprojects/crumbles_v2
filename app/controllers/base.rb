@@ -1,4 +1,7 @@
 Crumbles::App.controllers :main do
+  get :test, map: "/test" do
+    render "test"
+  end     
   get :index, map: "/" do
     cache_control :public, :max_age => 36000
 

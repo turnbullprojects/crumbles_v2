@@ -25,9 +25,9 @@ var WordListing = React.createClass({
     var thumbId = "thumbnail-" + word;
     return (
       <div className="dictionary-button">
-        <button className="insert-word" onMouseOver={this.showThumb} onClick={this.handleClick}>
+        <div className="button insert-word" onMouseOver={this.showThumb} onClick={this.handleClick}>
           {word}
-        </button>
+        </div>
         <div id={thumbId} ref="thumb" className="preview-image">
           <img ref="img"></img>
         </div>

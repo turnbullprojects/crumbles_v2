@@ -8,6 +8,7 @@
 // GLOBAL
 //////////////////////////////////////////////////
 html { height: 100%; }
+// MODIFIED
 body {
   color: $dark-grey;
   min-height: 100%;
@@ -16,6 +17,10 @@ body {
 .clear {
   clear: both;
 }
+#wrapper {
+  * { position: relative; }
+}
+
 
 %centered {
   margin: {
@@ -143,26 +148,23 @@ video { width: 90%; height: auto; }
 //////////////////////////////////////////////////
 // DICTIONARY SIDEBAR
 //////////////////////////////////////////////////
-.dictionaryContainer {
+#wrapper .dictionaryContainer {
   @extend %column;
   right: 0px;
   width: 408px;
-  height: 100%;
-  position:fixed;
+  height: 100vh;
   z-index: 1;
   overflow: scroll;
-  top:96px;
+  top:-20px;
   padding-bottom:20px;
+  position:fixed;
 }
-#dictionary > div:last-child { margin-bottom: 300px; }
 
-#dictionarySelectionContainer {
+#wrapper #dictionarySelectionContainer {
   position: fixed;
-  overflow: scroll;
   width: $dictionary-width;
   top: 0;
   right: 0;
-  padding-bottom:300px;
   background-color: $blue-grey;
   z-index: 10;
   color: white;
@@ -196,17 +198,18 @@ video { width: 90%; height: auto; }
     linear-gradient(left, shade($blue-grey, 10%), $blue-grey 5px)
   );
   font-weight: 100;
-  padding: 15px 0;
+  padding: 125px 0 300px;
   position: absolute;
   top: 0px;
   right: 0px;
   width: $dictionary-width;
 
-  button.insert-word {
+  .button.insert-word {
     background-color: $blue-grey;
     @include background-image(
       linear-gradient(left, shade($blue-grey, 10%), $blue-grey 5px)
     );
+    cursor: pointer;
     border: none;
     color: white;
     display: block;
@@ -222,6 +225,9 @@ video { width: 90%; height: auto; }
     }
   }
 }
+#wrapper .preview-image {
+  position: absolute;
+}
 .preview-image {
   $padding: 6px;
   $width: 160px;
@@ -236,7 +242,6 @@ video { width: 90%; height: auto; }
   border: 3px solid $red;
   border-radius: 5px;
   display: none;
-  position: absolute;
   z-index: 1;
   right: 100%;
   margin-right: 20px;
@@ -368,7 +373,8 @@ $loader-diameter: .75em;
 @-ms-keyframes loader { @include loader-keyframes; }
 @keyframes loader { @include loader-keyframes; }
 
-.loader {
+#wrapper .loader {
+  position: absolute;
   width: $loader-diameter; height: $loader-diameter;
   background-color: $light-grey;
   border-radius: $loader-diameter / 2;
@@ -385,7 +391,7 @@ $loader-diameter: .75em;
   [data-state = loading] & { display: block; }
 }
 .loader.hide { display: none; }
-.playButton {
+#wrapper .playButton {
   $diameter: 80px;
   background-color: rgba($light-grey,.85);
   width: $diameter;
@@ -495,8 +501,13 @@ $loader-diameter: .75em;
   width: $width;
   margin-left: 40px;
   margin-top: 20px;
-  margin-bottom:200px;
   overflow: scroll;
+}
+.social {
+  width: $width;
+  margin-left: 40px;
+  margin-top: 20px;
+  button { float: left; margin-left: 5%; }
 }
 
 @media (max-width: 900px) {
@@ -521,7 +532,7 @@ $loader-diameter: .75em;
 //////////////////////////////////////////////////
 // Ad Bar 
 //////////////////////////////////////////////////
-.GoogleActiveViewClass { background: #000; }
+.GoogleActiveViewClass { background: #000; z-index: 9999; position: relative; }
 
 ///////////////////////////////////////////////////
 // iOS
