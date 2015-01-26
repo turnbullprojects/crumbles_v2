@@ -1,4 +1,4 @@
-var Player = React.createClass({
+var Player = React.createClass({displayName: "Player",
  
   getInitialState: function() {
     return { 
@@ -284,12 +284,6 @@ var Player = React.createClass({
           // no play button on iphone 
           var iPhone = ( navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false );
           if(iPhone) { 
-            this.$video().bind('ended', function () {
-              // binding video
-              player.$video().unbind('ended');
-              player.incrementIndices(0);
-              player.playMashup();
-            });
              
           } else {
             button = "playButton"
@@ -300,14 +294,14 @@ var Player = React.createClass({
     } 
 
     return (
-      <div idName="player">
-        <video ref='video' src={this.currentVideoSrc()} poster={poster} type='video/mp4' id='master-vid'></video>
-        <audio ref="audio" src={this.currentAudioSrc()}></audio>
-        <div ref="loader" className={loader} ></div>
-        <div ref="button" className={button} onClick={this.replay}>
-          <img src="./assets/play.svg" />
-        </div>
-      </div>
+      React.createElement("div", {idName: "player"}, 
+        React.createElement("video", {ref: "video", src: this.currentVideoSrc(), poster: poster, type: "video/mp4", id: "master-vid"}), 
+        React.createElement("audio", {ref: "audio", src: this.currentAudioSrc()}), 
+        React.createElement("div", {ref: "loader", className: loader}), 
+        React.createElement("div", {ref: "button", className: button, onClick: this.replay}, 
+          React.createElement("img", {src: "./assets/play.svg"})
+        )
+      )
     );
   }
 });
