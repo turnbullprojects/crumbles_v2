@@ -280,20 +280,9 @@ var Player = React.createClass({
         console.log("play index is: " + this.state.playIndex);
         if(this.state.playIndex > 0) {
           this.playMashup(); 
-        } else {
-          // no play button on iphone 
-          var iPhone = ( navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false );
-          if(iPhone) { 
-            this.$video().bind('ended', function () {
-              // binding video
-              player.$video().unbind('ended');
-              player.incrementIndices(0);
-              player.playMashup();
-            });
-             
-          } else {
-            button = "playButton"
-          }
+        } 
+        else {
+          button = "playButton"
         }
       }
       loader = "loader hide";

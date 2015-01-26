@@ -494,7 +494,6 @@ $loader-diameter: .75em;
   margin-top: 20px;
   margin-bottom:200px;
   overflow: scroll;
-  height: 700px;
 }
 
 @media (max-width: 900px) {
@@ -514,7 +513,18 @@ $loader-diameter: .75em;
 }
 
 %footer {
-  margin-top: 60px;
+  margin-top: 200px;
+}
+//////////////////////////////////////////////////
+// Ad Bar 
+//////////////////////////////////////////////////
+.GoogleActiveViewClass { background: #000; }
+
+///////////////////////////////////////////////////
+// iOS
+//////////////////////////////////////////////////
+video::-webkit-media-controls {
+    display:none !important;
 }
 
-.GoogleActiveViewClass { background: #000; }
+
