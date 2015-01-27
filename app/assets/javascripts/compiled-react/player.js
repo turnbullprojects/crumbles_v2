@@ -173,6 +173,11 @@ var Player = React.createClass({displayName: "Player",
           loadedVideo: loadedVideo,
           loadedAudio: loadedAudio
         });
+        var loaded = loadedVideo + loadedAudio;
+        var loaded = this.state.loadedAudio + this.state.loadedVideo;
+        var target = this.props.entries.length + this.props.audioNeeded;
+   
+        console.log("loaded " + loaded + "/" + target);
       }
     }
     xhr.send();

@@ -1,4 +1,5 @@
 
+//=require naughty_words
 //=require lib/rangy-core
 //=require lib/rangy-textrange
 //=require lib/rangy-cssclassapplier
@@ -12,8 +13,7 @@
 //=require compiled-react/mashup_container
 //=require compiled-react/create_app
 
-console.log("loaded applicationjs");
-$.get("/dictionary/2")
+$.get("/dictionary/4")
 .done(function(data) {
   createApp(data);
 });

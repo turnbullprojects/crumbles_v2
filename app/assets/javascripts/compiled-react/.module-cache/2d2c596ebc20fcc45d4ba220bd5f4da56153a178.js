@@ -70,6 +70,11 @@ var Player = React.createClass({displayName: "Player",
       this.refs.loader.getDOMNode().className = "loader hide"
     }
   },
+  hidePlayButton: function() {
+    if(this.refs.loader) {
+      this.refs.button.getDOMNode().className = "playButton hide"
+    }
+  },
   canPlay: function() {
     var loaded = this.state.loadedAudio + this.state.loadedVideo;
     var target = this.props.entries.length + this.props.audioNeeded;
@@ -104,6 +109,7 @@ var Player = React.createClass({displayName: "Player",
   preload: function(entries) {
     
     this.showLoader();
+    this.hidePlayButton();
     for(var i=0; i < entries.length; i++) {
       var entry = entries[i];
       if (!entry["defined"]) {
@@ -167,6 +173,11 @@ var Player = React.createClass({displayName: "Player",
           loadedVideo: loadedVideo,
           loadedAudio: loadedAudio
         });
+        var loaded = loadedVideo + loadedAudio;
+        var loaded = this.state.loadedAudio + this.state.loadedVideo;
+        var target = this.props.entries.length + this.props.audioNeeded;
+   
+        console.log("loaded " + loaded + "/" + target);
       }
     }
     xhr.send();
@@ -267,23 +278,25 @@ var Player = React.createClass({displayName: "Player",
     var loader = "loader";
     var button = "playButton hide"
 
+    // show poster
     var poster = this.currentVideoImg();
     if(poster === undefined && this.props.entries.length > 0) {
       poster = this.props.entries[0]["screenshot"];
     }
-    
 
+    // show playbutton
     if (this.canPlay()) { 
       if (this.vidNode()) { 
-        console.log("play index is: " + this.state.playIndex);
         if(this.state.playIndex > 0) {
           this.playMashup(); 
-        } else {
-          var button = "playButton"
+        } 
+        else {
+          button = "playButton"
         }
       }
       loader = "loader hide";
     } 
+
     return (
       React.createElement("div", {idName: "player"}, 
         React.createElement("video", {ref: "video", src: this.currentVideoSrc(), poster: poster, type: "video/mp4", id: "master-vid"}), 

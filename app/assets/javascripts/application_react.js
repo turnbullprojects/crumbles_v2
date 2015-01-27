@@ -1,4 +1,4 @@
-
+//=require lib/jquery.profanityfilter.min.js
 //=require lib/rangy-core
 //=require lib/rangy-textrange
 //=require lib/rangy-cssclassapplier

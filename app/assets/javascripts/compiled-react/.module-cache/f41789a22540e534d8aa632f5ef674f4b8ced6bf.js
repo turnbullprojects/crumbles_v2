@@ -19,7 +19,7 @@ var TextBox = React.createClass({displayName: "TextBox",
     .value();
     var phrase = params["q"];
     if (phrase === undefined) {
-      return "Hello and welcome!";
+      return "Watch it today!";
     } else {
       return decodeURIComponent(phrase);
     }
@@ -63,8 +63,8 @@ var TextBox = React.createClass({displayName: "TextBox",
     window.clearTimeout(this.state.timeoutIdOne);
     window.clearTimeout(this.state.timeoutIdTwo);
 
-    timeoutIdOne = window.setTimeout(this.processInput, 1500); 
-    timeoutIdTwo = window.setTimeout(this.markUndefined, 1500); 
+    timeoutIdOne = window.setTimeout(this.processInput, 200); 
+    timeoutIdTwo = window.setTimeout(this.markUndefined, 200); 
 
     this.setState({ timeoutIdOne: timeoutIdOne, 
                     timeoutIdTwo: timeoutIdTwo,
@@ -159,9 +159,9 @@ var TextBox = React.createClass({displayName: "TextBox",
   render: function() {
 
     return (
-      React.createElement("div", {id: "input-container"});
-      React.createElement("div", {id: "mashup-input", ref: "box", contentEditable: "true", onKeyUp: this.handleInput});
-      React.createElement(WordCount, {wordLeft: this.state.wordsLeft});
+      React.createElement("div", {idName: "phrase-input"}, 
+      React.createElement("div", {id: "mashup-input", ref: "box", contentEditable: "true", onKeyUp: this.handleInput}), 
+      React.createElement(WordCount, {wordLeft: this.state.wordsLeft})
       )
     );
   }
