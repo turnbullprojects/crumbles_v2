@@ -9,22 +9,10 @@
       @import url("http://www.usanetwork.com/sites/usanetwork/files/css/css_536568333d357cc97900601b78c8d6390f610f11110b9534442a4030df4ac16c.css");
 
   %body
-    :javascript
-      var randDARTNumber=0;
-      function genSetRandDARTNumber()
-      {
-       randDARTNumber = Math.round(Math.random()*1000000000000);
-      }
-      genSetRandDARTNumber(); 
-      document.write('<sc'+'ript language=\'JavaScript1.1\' src="http://ad.doubleclick.net/N2620/adj/nbcu.usa/suits_;site=usa;sect=suits;sub=;genre=;daypart=;!category=suits;!category=js;!category=usa;!category=noopapd;!category=noexpand;network=tvn;sz=728x90;tagtype=js;dcopt=ist;uri=;pos=1;tile=1;ord' + randDARTNumber + '?"></s'+'cript>');
+    = partial "vendor/ad_banner"
     #wrapper
       #main
-      = partial "social"
-    = partial "usa_footer"
-    / Our JS
-    %script{ src: "http://fb.me/react-with-addons-0.12.2.min.js", type: "text/javascript"}
-    %script{ src: "http://code.jquery.com/jquery-1.10.0.min.js"}
-    %script{ src: "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"}
- 
-    %script{ src: "./assets/application.js"}
+    #initial-loader.loader
+    = partial "vendor/usa_footer"
+    = partial "partials/footer"
       

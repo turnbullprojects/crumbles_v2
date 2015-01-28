@@ -1,12 +1,14 @@
 Crumbles::App.controllers :main do
+  get :basic, map: "/basic" do
+    render "basic"
+  end
+
   get :test, map: "/test" do
     render "test"
   end     
   get :index, map: "/" do
     cache_control :public, :max_age => 36000
 
-    @title = "Crumbles"
-    @description = "Crumbles are kinda like reaction GIFs with a way bigger vocabulary... and all you have to do to make one is type."
     @dictionaries = Dictionary.all
     render "index"
   end

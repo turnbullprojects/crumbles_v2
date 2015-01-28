@@ -3,39 +3,67 @@ var MashupContainer = React.createClass({
   getInitialState: function() { 
     return { 
       phrase: [],
-      audioNeeded: 0,
+      dictionary: LouisDictionary,
+      video: "http://upverse.com/materials/video/dictionaries/louis/phrases/Y2FuIHlvdSBzYXkgaXQgYmV0dGVy.mp4"
     } 
   },
+
+  componentDidMount: function(){
+    $("#initial-loader").hide();
+  },
  
+  switchDictionary: function(dictName){ 
+    if (dictName === "louis") {
+      this.setState({ 
+        phrase: this.state.phrase,
+        dictionary: LouisDictionary,
+        video: this.state.video
+      });
+    }
+    else if (dictName === "donna") {
+      this.setState({ 
+        phrase: this.state.phrase,
+        dictionary: DonnaDictionary,
+        video: this.state.video
+      });   
+    }
+  
+  },
 
   handlePhraseInput: function(words) {
 
-    var newAudioNeeded = 0;
     var oldPhrase = this.state.phrase;
     var newPhrase = [];
-    var samePhrase = true;
 
     for (var i=0; i < words.length; i++) {
-      var word = words[i];
-      if(oldPhrase[i] && word === oldPhrase[i]["word"]) {
-        newPhrase.push(oldPhrase[i]);
-      } 
-      else {
-        var entry = this.findInDictionary(this.props.dictionary, word);
-        if (!entry) {
-          var undedfinedEntry = this.notInDictionary(this.props.dictionary, word);
-          // clone or it will binds all undefined to final word used
-          entry = _.clone(undedfinedEntry); 
-          newAudioNeeded += 1
-        }
-
-        newPhrase.push(entry);
-        samePhrase = false;
+      var word = words[i]
+      var entry = this.findInDictionary(this.state.dictionary, word);
+      if (!entry) {
+        var undedfinedEntry = this.notInDictionary(this.state.dictionary, word);
+        // clone or it will binds all undefined to final word used
+        entry = _.clone(undedfinedEntry); 
       }
-    };
-    if(!samePhrase) {
-      this.setState({ phrase: newPhrase, audioNeeded: newAudioNeeded });
+
+      newPhrase.push(entry);
     }
+    this.setState({ phrase: newPhrase, video: this.state.video });
+    var video = this.getVideo(words);
+  },
+
+  getVideo: function(words) {
+    var text = words.join(" ");
+    var that = this;
+    var dict = this.state.dictionary["dictionary"].toLowerCase();
+    var voice = this.state.dictionary["voice"].toLowerCase();
+    $.get("http://upverse.com/app/dictionary/" + dict + "/" + text + "?voice=" + voice)
+     .success(function(results) {
+        console.log("COMPLETE");
+        console.log(results);
+       var video = "http://" + results["video"];
+       that.setState({ phrase: that.state.phrase, video: video });
+       console.log("video is " + video);
+       console.log("state of video is " + that.state.video)
+     });
   },
 
   findInDictionary: function(dictionary, word) {
@@ -60,12 +88,13 @@ var MashupContainer = React.createClass({
 
   render: function() {
     var entries = [];
+    var currentChar = this.state.dictionary["dictionary"];
 
     return (
       <div id="crumbles">
        <div id="word-list" className="dictionaryContainer">
           <div id="dictionary">
-            <WordList dictionary={this.props.dictionary} onButtonClick={this.addWordFromList}/>
+            <WordList dictionary={this.state.dictionary} onButtonClick={this.addWordFromList}/>
           </div>
         </div>
  
@@ -77,7 +106,7 @@ var MashupContainer = React.createClass({
           </header>
    
           <PhraseInput ref="input" entries={this.state.phrase} onInput={this.handlePhraseInput} />
-          <Player entries={this.state.phrase} audioNeeded={this.state.audioNeeded} />
+          <Player video={this.state.video} />
         </div>
      </div>
     );

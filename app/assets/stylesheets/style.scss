@@ -373,7 +373,7 @@ $loader-diameter: .75em;
 @-ms-keyframes loader { @include loader-keyframes; }
 @keyframes loader { @include loader-keyframes; }
 
-#wrapper .loader {
+.loader, #wrapper .loader {
   position: absolute;
   width: $loader-diameter; height: $loader-diameter;
   background-color: $light-grey;
@@ -541,4 +541,62 @@ video::-webkit-media-controls {
     display:none !important;
 }
 
-
+///////////////////////////////////////////////////
+// Characters
+//////////////////////////////////////////////////
+//
+//#character-list {
+//  .character { 
+//    display:inline-block;
+//    border:5px $red solid;
+//    cursor: pointer;
+//    width: 64px;
+//    height: 64px;
+//  }
+//  .coming-soon, .active { 
+//    cursor: normal; 
+//  }
+//
+//  .louis { 
+//    background-image: url("./assets/louis-inactive.png"); 
+//  } 
+//  .louis.active { 
+//    background-image: url("./assets/louis-active.png"); 
+//  } 
+//  .donna { 
+//    background-image: url("./assets/donna-inactive.png"); 
+//  } 
+//  .donna.active { 
+//    background-image: url("./assets/donna-active.png"); 
+//  } 
+//  .harvey { 
+//    background-image: url("./assets/harvey-inactive.png"); 
+//  } 
+//  .harvey.active { 
+//    background-image: url("./assets/harvey-active.png"); 
+//  } 
+//  .harvey.coming-soon { 
+//    background-image: url("./assets/harvey-coming-soon.png"); 
+//  } 
+//  .mike { 
+//    background-image: url("./assets/mike-inactive.png"); 
+//  } 
+//  .mike.active { 
+//    background-image: url("./assets/mike-active.png"); 
+//  } 
+//  .mike.coming-soon { 
+//    background-image: url("./assets/mike-coming-soon.png"); 
+//  } 
+//  .all { 
+//    background-image: url("./assets/all-inactive.png"); 
+//  } 
+//  .all.active { 
+//    background-image: url("./assets/all-active.png"); 
+//  } 
+//  .all.coming-soon { 
+//    background-image: url("./assets/all-inactive.png); 
+//  } 
+//
+//}
+//
+//

@@ -1,6 +1,6 @@
 var TextBox = React.createClass({
   getInitialState: function() {
-    return { timeoutIdOne: 0, timeoutIdTwo: 0, wordsLeft: 0 }
+    return { wordsLeft: 0 }
   },
 
   componentDidMount: function() {
@@ -57,21 +57,17 @@ var TextBox = React.createClass({
 
   handleInput: function(){
 
-    var wordsLeft = this.state.wordsLeft
 
     wordsLeft = this.wordCount();
-    window.clearTimeout(this.state.timeoutIdOne);
-    window.clearTimeout(this.state.timeoutIdTwo);
 
-    timeoutIdOne = window.setTimeout(this.processInput, 200); 
-    timeoutIdTwo = window.setTimeout(this.markUndefined, 200); 
-
-    this.setState({ timeoutIdOne: timeoutIdOne, 
-                    timeoutIdTwo: timeoutIdTwo,
-                    wordsLeft: wordsLeft 
-                  });
+    this.processInput();
+    this.markUndefined();
   },
 
+  countWords: function() {
+    var remaining = this.wordCount();
+    this.setState({ wordsLeft: remaining});
+  },
   wordCount: function() {
     var maxWords = 25;
     var txt = this.refs.box.getDOMNode().innerHTML;
@@ -160,7 +156,8 @@ var TextBox = React.createClass({
 
     return (
       <div idName="phrase-input">
-      <div id='mashup-input' ref="box" contentEditable='true' onKeyUp={this.handleInput}></div>
+      <div id='mashup-input' ref="box" contentEditable='true' onKeyUp={this.countWords}> </div>
+      <button id='mashup-submit' ref="submit" onClick={this.handleInput}>Create Crumble</button>
       <WordCount wordLeft={this.state.wordsLeft} />
       </div>
     );

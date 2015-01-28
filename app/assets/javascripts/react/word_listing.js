@@ -8,9 +8,6 @@ var WordListing = React.createClass({
     var oldText = input.html(); 
     var newText = oldText + " " + entry["word"];
     input.html(newText);
-    // and pretend we put it in
-    var keyUp = $.Event("keyup");
-    input.trigger(keyUp);
     this.props.onButtonClick(entry);
   },
   

@@ -1,20 +1,20 @@
 
-//=require naughty_words
+
+//=require basic/dictionaries/louis
+//=require basic/dictionaries/donna
 //=require lib/rangy-core
 //=require lib/rangy-textrange
 //=require lib/rangy-cssclassapplier
 //=require models/entry
-//=require compiled-react/word_count
-//=require compiled-react/text_box
-//=require compiled-react/phrase_input
-//=require compiled-react/player
-//=require compiled-react/word_list
-//=require compiled-react/word_listing
-//=require compiled-react/mashup_container
-//=require compiled-react/create_app
+//=require react/word_count
+//=require react/text_box
+//=require react/phrase_input
+//=require react/player
+//=require react/word_list
+//=require react/word_listing
+//=require react/mashup_container
+//=require react/create_app
 
-$.get("/dictionary/4")
-.done(function(data) {
-  createApp(data);
-});
+console.log("test");
+createApp(LouisDictionary);
 

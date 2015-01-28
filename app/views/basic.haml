@@ -1,0 +1,34 @@
+!!! 5
+%html
+  %head
+    %title Say It With Suits
+    %link{href: "./assets/basic.scss", media: "screen", rel: "stylesheet"}
+    = favicon_tag "/assets/favicon.ico"
+  %body
+    = partial "vendor/ad_banner"
+    #wrapper
+      #main
+        .row
+          %h1 
+            WATCH 
+            %span.red.bold SUITS 
+            WEDNESDAYS AT 10/9c ON USA
+
+        .row
+          #mashup-input
+            Can you say it better?
+        .row
+          #words-left
+            %b 22
+            | words remaining
+        .row
+          %video{ src: "http://upverse.com/materials/video/dictionaries/louis/phrases/Y2FuIHlvdSBzYXkgaXQgYmV0dGVy.mp4" }
+            
+
+
+      #dictionary
+
+
+    = partial "vendor/usa_footer"
+    = partial "partials/footer"
+     
