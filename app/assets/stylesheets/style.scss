@@ -122,6 +122,7 @@ button {
 }
 #mashup-submit {
   float: right;
+  z-index: 5;
 }
 .undefined { color: $red; }
 .disabled { color: $grey; }
