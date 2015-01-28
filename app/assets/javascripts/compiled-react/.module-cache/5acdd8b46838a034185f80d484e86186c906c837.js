@@ -64,12 +64,9 @@ var TextBox = React.createClass({displayName: "TextBox",
     this.markUndefined();
   },
 
-  countWords: function(e) {
+  countWords: function() {
     var remaining = this.wordCount();
     this.setState({ wordsLeft: remaining});
-    if (e.which === 13) {
-      this.handleInput();
-    }
   },
   wordCount: function() {
     var maxWords = 25;

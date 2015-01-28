@@ -1,4 +1,4 @@
 function createApp(dictionary){
-  React.render( React.createElement(MashupContainer, {dictionary: dictionary}), document.getElementById("main"));
+  React.render( React.createElement(MashupContainer, null), document.getElementById("main"));
 
 }

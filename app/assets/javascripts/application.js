@@ -10,6 +10,7 @@
 //=require react/text_box
 //=require react/phrase_input
 //=require react/player
+//=require react/character_list
 //=require react/word_list
 //=require react/word_listing
 //=require react/mashup_container

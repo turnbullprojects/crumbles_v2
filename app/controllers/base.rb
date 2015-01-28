@@ -7,7 +7,7 @@ Crumbles::App.controllers :main do
     render "test"
   end     
   get :index, map: "/" do
-    cache_control :public, :max_age => 36000
+    #cache_control :public, :max_age => 36000
 
     @dictionaries = Dictionary.all
     render "index"

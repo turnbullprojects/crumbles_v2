@@ -104,37 +104,40 @@ button {
 //////////////////////////////////////////////////
 #input-container {
   margin-bottom: 20px;
-}
-#mashup-input {
-  border-radius: .33em;
   @extend %centered;
   @include box-shadow(inset 0 0 5px rgba(black, .2));
-  //background-color: $light-grey;
+  background-color: $light-grey;
   background-color: #aaa;
   font-size: 24px;
   line-height: 1.2;
-  min-height: 3.1em;
   padding: .35em .6em;
   text-align: left;
   width:90%;
+  border-top:5px $red solid;
 
+}
+#mashup-input {
+  min-height: 3.1em;
   &:focus { outline: none; }
+}
+#mashup-submit {
+  float: right;
 }
 .undefined { color: $red; }
 .disabled { color: $grey; }
 
 // Words left
 #words-left {
-  width: 90%;
   margin-top: 8px;
+  float:left;
   @extend %centered;
-  color: $grey;
+  color: $dark-grey;
   font: {
     size: 14px;
     style: italic;
   }
   text: {
-    align: right;
+    align: left;
     transform: uppercase;
   }
 }
@@ -545,58 +548,43 @@ video::-webkit-media-controls {
 // Characters
 //////////////////////////////////////////////////
 //
-//#character-list {
-//  .character { 
-//    display:inline-block;
-//    border:5px $red solid;
-//    cursor: pointer;
-//    width: 64px;
-//    height: 64px;
-//  }
-//  .coming-soon, .active { 
-//    cursor: normal; 
-//  }
-//
-//  .louis { 
-//    background-image: url("./assets/louis-inactive.png"); 
-//  } 
-//  .louis.active { 
-//    background-image: url("./assets/louis-active.png"); 
-//  } 
-//  .donna { 
-//    background-image: url("./assets/donna-inactive.png"); 
-//  } 
-//  .donna.active { 
-//    background-image: url("./assets/donna-active.png"); 
-//  } 
-//  .harvey { 
-//    background-image: url("./assets/harvey-inactive.png"); 
-//  } 
-//  .harvey.active { 
-//    background-image: url("./assets/harvey-active.png"); 
-//  } 
-//  .harvey.coming-soon { 
-//    background-image: url("./assets/harvey-coming-soon.png"); 
-//  } 
-//  .mike { 
-//    background-image: url("./assets/mike-inactive.png"); 
-//  } 
-//  .mike.active { 
-//    background-image: url("./assets/mike-active.png"); 
-//  } 
-//  .mike.coming-soon { 
-//    background-image: url("./assets/mike-coming-soon.png"); 
-//  } 
-//  .all { 
-//    background-image: url("./assets/all-inactive.png"); 
-//  } 
-//  .all.active { 
-//    background-image: url("./assets/all-active.png"); 
-//  } 
-//  .all.coming-soon { 
-//    background-image: url("./assets/all-inactive.png); 
-//  } 
-//
-//}
-//
-//
+#character-list {
+  width: 90%;
+  margin: 0 auto;
+  .character { 
+    border-top:5px #2d2d2d solid;
+    border-left:5px #2d2d2d solid;
+    border-right:5px #2d2d2d solid;
+    cursor: pointer;
+    width: 69px;
+    height: 69px;
+    float: left;
+    background-repeat: no-repeat;
+  }
+  .active-chars{ display: inline-block; }
+  .active {
+    border-top:5px $red solid;
+    border-left:5px $red solid;
+    border-right:5px $red solid;
+  }
+  .coming-soon, .active { 
+    cursor: default; 
+  }
+
+  .louis { background-image: url(/assets/louis-inactive.png); } 
+  .louis.active { background-image: url(/assets/louis-active.png); } 
+  .donna { background-image: url(/assets/donna-inactive.png); } 
+  .donna.active { background-image: url(/assets/donna-active.png); } 
+  .harvey { background-image: url(/assets/harvey-inactive.png); } 
+  .harvey.active { background-image: url(/assets/harvey-active.png); } 
+  .harvey.coming-soon { background-image: url(/assets/harvey-coming-soon.png); } 
+  .mike { background-image: url(/assets/mike-inactive.png); } 
+  .mike.active { background-image: url(/assets/mike-active.png); } 
+  .mike.coming-soon { background-image: url(/assets/mike-coming-soon.png); } 
+  .all { background-image: url(/assets/all-inactive.png); } 
+  .all.active { background-image: url(/assets/all-active.png); } 
+  .all.coming-soon { background-image: url(/assets/all-inactive.png); } 
+
+}
+
+

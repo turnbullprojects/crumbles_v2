@@ -1,4 +1,4 @@
-var MashupContainer = React.createClass({
+var MashupContainer = React.createClass({displayName: "MashupContainer",
 
   getInitialState: function() { 
     return { 
@@ -88,29 +88,28 @@ var MashupContainer = React.createClass({
 
   render: function() {
     var entries = [];
-    $("#initial-loader").hide();
     var currentChar = this.state.dictionary["dictionary"];
 
     return (
-      <div id="crumbles">
-       <div id="word-list" className="dictionaryContainer">
-          <div id="dictionary">
-            <WordList dictionary={this.state.dictionary} onButtonClick={this.addWordFromList}/>
-          </div>
-        </div>
+      React.createElement("div", {id: "crumbles"}, 
+       React.createElement("div", {id: "word-list", className: "dictionaryContainer"}, 
+          React.createElement("div", {id: "dictionary"}, 
+            React.createElement(WordList, {dictionary: this.state.dictionary, onButtonClick: this.addWordFromList})
+          )
+        ), 
  
-        <div id="mashup-container">
-          <header>
-            <h1 id='suits'>
-              WATCH <span className='bold red'>SUITS</span> WEDNESDAYS AT 10/9c ON USA
-            </h1>
-          </header>
-          <CharacterList ref="characters" switchChar={this.switchDictionary} currentChar={currentChar} />
+        React.createElement("div", {id: "mashup-container"}, 
+          React.createElement("header", null, 
+            React.createElement("h1", {id: "suits"}, 
+              "WATCH ", React.createElement("span", {className: "bold red"}, "SUITS"), " WEDNESDAYS AT 10/9c ON USA"
+            )
+          ), 
+          React.createElement(CharacterList, {ref: "characters", switchChar: this.switchDictionary, currentChar: currentChar}), 
    
-          <PhraseInput ref="input" entries={this.state.phrase} onInput={this.handlePhraseInput} />
-          <Player video={this.state.video} />
-        </div>
-     </div>
+          React.createElement(PhraseInput, {ref: "input", entries: this.state.phrase, onInput: this.handlePhraseInput}), 
+          React.createElement(Player, {video: this.state.video})
+        )
+     )
     );
   }
 });

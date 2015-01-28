@@ -1,28 +1,31 @@
 var CharacterList = React.createClass({
 
 
-  getCurrentChar: function() {
-    if (this.props.currentChar === "louis") {
-      <div ref="louis" class="character louis active"></div>
-      <div ref="donna" class="character donna" onClick={this.props.switchChar("donna")}></div>
-    } 
-    else if (this.props.currentChar === "donna"){
-      <div ref="louis" class="character louis" onClick={this.props.switchChar("louis")}></div>
-      <div ref="donna" class="character donna active" ></div>
+
+  handleClick: function(e) {
+    console.log( "click");
+    var sender = (e && e.target) || (window.event && window.event.srcElement);
+    var charId = sender.id;
+    if(charId) {
+      this.props.switchChar(charId);
+      $("#initial-loader").show();
+      $(".active").removeClass("active");
+      $("#" + charId).addClass("active");
     }
   },
  
   render: function() {
 
-    var activeChars = this.getCurrentChar();
     
     return (
       <div id="character-list">
-        {activeChars}
-        <div ref="harvey" class="character harvey coming-soon"></div>
-        <div ref="harvey" class="character mike coming-soon"></div>
-        <div ref="all" class="character all coming-soon"></div>
+        <div ref="louis" id="louis" className="character louis" onClick={this.handleClick}></div>
+        <div ref="donna" id="donna" className="character donna active" onClick={this.handleClick}></div>
+        <div ref="harvey" className="character harvey coming-soon" onClick={this.handleClick}></div>
+        <div ref="mike" className="character mike coming-soon" onClick={this.handleClick}></div>
+        <div ref="all" className="character all coming-soon" onClick={this.handleClick}></div>
+        <div className="clear"></div>
       </div>
     )
   }
- 
+});

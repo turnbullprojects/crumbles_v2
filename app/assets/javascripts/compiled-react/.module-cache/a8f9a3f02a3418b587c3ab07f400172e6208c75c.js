@@ -64,12 +64,9 @@ var TextBox = React.createClass({displayName: "TextBox",
     this.markUndefined();
   },
 
-  countWords: function(e) {
+  countWords: function() {
     var remaining = this.wordCount();
     this.setState({ wordsLeft: remaining});
-    if (e.which === 13) {
-      this.handleInput();
-    }
   },
   wordCount: function() {
     var maxWords = 25;
@@ -159,10 +156,10 @@ var TextBox = React.createClass({displayName: "TextBox",
 
     return (
       React.createElement("div", {idName: "phrase-input"}, 
-        React.createElement("div", {id: "mashup-input", ref: "box", contentEditable: "true", onKeyUp: this.countWords}, " "), 
-        React.createElement("button", {id: "mashup-submit", ref: "submit", onClick: this.handleInput}, "Create Crumble"), 
-        React.createElement(WordCount, {wordLeft: this.state.wordsLeft}), 
-        React.createElement("div", {className: "clear"})
+      React.createElement("div", {id: "mashup-input", ref: "box", contentEditable: "true", onKeyUp: this.countWords}, " "), 
+      React.createElement("button", {id: "mashup-submit", ref: "submit", onClick: this.handleInput}, "Create Crumble"), 
+      React.createElement("div", {class: "clear"}), 
+      React.createElement(WordCount, {wordLeft: this.state.wordsLeft})
       )
     );
   }
