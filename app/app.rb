@@ -16,7 +16,7 @@ module Crumbles
     # Caching support.
     #
     register Padrino::Cache
-    enable :caching
+    #enable :caching
     #
     # You can customize caching store engines:
     #

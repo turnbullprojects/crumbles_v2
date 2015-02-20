@@ -92,7 +92,20 @@ var MashupContainer = React.createClass({
     var currentChar = this.state.dictionary["dictionary"];
 
     return (
+
       <div id="crumbles">
+       <header className="crumbles">
+         <h1 id='crumbles-logo'>
+           Crumbles
+         </h1>
+         <div id='thirtylabs-logo'>
+            <p>created at</p>
+           <a href="http://thirtylabs.com" target="_blank">
+             <img src="/assets/30L.svg" />
+           </a>
+         </div>
+       </header>
+
        <div id="word-list" className="dictionaryContainer">
           <div id="dictionary">
             <WordList dictionary={this.state.dictionary} onButtonClick={this.addWordFromList}/>
@@ -100,13 +113,7 @@ var MashupContainer = React.createClass({
         </div>
  
         <div id="mashup-container">
-          <header>
-            <h1 id='suits'>
-              WATCH <span className='bold red'>SUITS</span> WEDNESDAYS AT 10/9c ON USA
-            </h1>
-          </header>
-          <CharacterList ref="characters" switchChar={this.switchDictionary} currentChar={currentChar} />
-   
+             
           <PhraseInput ref="input" entries={this.state.phrase} onInput={this.handlePhraseInput} />
           <Player video={this.state.video} />
         </div>

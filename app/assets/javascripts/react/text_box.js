@@ -19,7 +19,7 @@ var TextBox = React.createClass({
     .value();
     var phrase = params["q"];
     if (phrase === undefined) {
-      return "Watch it today!";
+      return "Welcome to Crumbles!";
     } else {
       return decodeURIComponent(phrase);
     }
