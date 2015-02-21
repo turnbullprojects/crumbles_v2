@@ -3,8 +3,7 @@ var MashupContainer = React.createClass({
   getInitialState: function() { 
     return { 
       phrase: [],
-      dictionary: LouisDictionary,
-      video: "http://upverse.com/materials/video/dictionaries/louis/phrases/Y2FuIHlvdSBzYXkgaXQgYmV0dGVy.mp4"
+      video: "https://crumbles-2015.s3.amazonaws.com/resources/video/dictionaries/standard/phrases/d2VsY29tZSB0byBjcnVtYmxlcw%3D%3D.mp4"
     } 
   },
 
@@ -37,7 +36,7 @@ var MashupContainer = React.createClass({
 
     for (var i=0; i < words.length; i++) {
       var word = words[i]
-      var entry = this.findInDictionary(this.state.dictionary, word);
+      var entry = this.findInDictionary(this.props.dictionary, word);
       if (!entry) {
         var undedfinedEntry = this.notInDictionary(this.state.dictionary, word);
         // clone or it will binds all undefined to final word used
@@ -53,9 +52,9 @@ var MashupContainer = React.createClass({
   getVideo: function(words) {
     var text = words.join(" ");
     var that = this;
-    var dict = this.state.dictionary["dictionary"].toLowerCase();
-    var voice = this.state.dictionary["voice"].toLowerCase();
-    $.get("http://upverse.com/app/dictionary/" + dict + "/" + text + "?voice=" + voice)
+    var dict = this.props.dictionary["dictionary"].toLowerCase();
+    var voice = this.props.dictionary["voice"].toLowerCase();
+    $.get("https://upverse.com/app/dictionary/" + dict + "/" + text + "?voice=" + voice)
      .success(function(results) {
         console.log("COMPLETE");
         console.log(results);
@@ -77,7 +76,7 @@ var MashupContainer = React.createClass({
   },
 
   notInDictionary: function(dictionary, word) {
-    var randomVideo = dictionary["entries"]["jury"];
+    var randomVideo = dictionary["entries"]["1"];
     randomVideo["defined"] = false;
     randomVideo["word"] = word;
     return randomVideo;
@@ -89,7 +88,7 @@ var MashupContainer = React.createClass({
   render: function() {
     var entries = [];
     $("#initial-loader").hide();
-    var currentChar = this.state.dictionary["dictionary"];
+    var currentChar = this.props.dictionary["dictionary"];
 
     return (
 
@@ -108,7 +107,7 @@ var MashupContainer = React.createClass({
 
        <div id="word-list" className="dictionaryContainer">
           <div id="dictionary">
-            <WordList dictionary={this.state.dictionary} onButtonClick={this.addWordFromList}/>
+            <WordList dictionary={this.props.dictionary} onButtonClick={this.addWordFromList}/>
           </div>
         </div>
  
