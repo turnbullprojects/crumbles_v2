@@ -103,6 +103,16 @@ var MashupContainer = React.createClass({
              <img src="/assets/30L.svg" />
            </a>
          </div>
+         <div id='dictionary-select'>
+           <div id='current-dictionary' className='dict-standard'>
+             <img src='/assets/down-arrow.png' />
+           </div>
+           <ul>
+             <li className='dict-standard'>Movie Clips</li>
+             <li className='dict-homer'>Homer Simpson</li>
+             <li className='dict-bp'>Bee & Puppycat</li>
+           </ul>
+         </div>
        </header>
 
        <div id="word-list" className="dictionaryContainer">

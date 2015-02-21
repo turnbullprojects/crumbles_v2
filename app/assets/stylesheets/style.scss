@@ -541,6 +541,49 @@ $loader-diameter: .75em;
 %footer {
   margin-top: 200px;
 }
+///////////////////////////////////////////////////
+// Dictionary List
+//////////////////////////////////////////////////
+
+#dictionary-select {
+  float:right;
+  width:200px;
+  height: 60px;
+  #current-dictionary {
+    height: 60px;
+    img {
+      float: right;
+      margin-top: 18px;
+      margin-right: 10px;
+    }
+  }
+  ul {
+    width:190;
+    padding: 0 5px;
+    margin-top: 0px;
+    list-style: none;
+    background-color: $light-grey;
+    border: 1px solid $grey;
+    li { 
+      height: 60px;
+      cursor: pointer;
+      padding-bottom:15px;
+      text-indent: -9999px;
+    }
+  }
+  .dict-standard {
+    background: url(/assets/movie-clips-dictionary.png) center left no-repeat;
+  }
+  .dict-homer {
+    background: url(/assets/homer-dictionary.png) center left no-repeat;
+  }
+  .dict-bp {
+    background: url(/assets/bee-and-puppycat-dictionary.png) center left no-repeat;
+  }
+
+}
+
+
 //////////////////////////////////////////////////
 // Ad Bar 
 //////////////////////////////////////////////////
