@@ -550,6 +550,7 @@ $loader-diameter: .75em;
   width:200px;
   height: 60px;
   #current-dictionary {
+    cursor: pointer;
     height: 60px;
     img {
       float: right;
@@ -557,7 +558,9 @@ $loader-diameter: .75em;
       margin-right: 10px;
     }
   }
-  ul {
+  ul#dictionary-list {
+    cursor: pointer;
+    display: none;
     width:190;
     padding: 0 5px;
     margin-top: 0px;
@@ -566,7 +569,6 @@ $loader-diameter: .75em;
     border: 1px solid $grey;
     li { 
       height: 60px;
-      cursor: pointer;
       padding-bottom:15px;
       text-indent: -9999px;
     }

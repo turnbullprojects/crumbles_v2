@@ -1,34 +1,24 @@
 var MashupContainer = React.createClass({
 
   getInitialState: function() { 
-    return { 
-      phrase: [],
-      video: "https://crumbles-2015.s3.amazonaws.com/resources/video/dictionaries/standard/phrases/d2VsY29tZSB0byBjcnVtYmxlcw%3D%3D.mp4"
-    } 
+      return { 
+        phrase: [],
+        video: "https://crumbles-2015.s3.amazonaws.com/resources/video/dictionaries/standard/phrases/d2VsY29tZSB0byBjcnVtYmxlcw%3D%3D.mp4",
+        dictionary: {"voice":"","dictionary":"","entries":{}}
+      }
+     
   },
 
-  componentDidMount: function(){
-    $("#initial-loader").hide();
+  componentWillMount: function(){
+    var that = this;
+    $.get('/assets/dictionaries/standard.json', function(dict){
+        console.log("LOADING DICTIONARY");
+        $("#initial-loader").hide();
+        that.setState({ phrase: that.state.phrase, video: that.state.video, dictionary: dict });
+      }
+    );
   },
  
-  switchDictionary: function(dictName){ 
-    console.log("Switching to " + dictName);
-    if (dictName === "louis") {
-      this.setState({ 
-        phrase: this.state.phrase,
-        dictionary: LouisDictionary,
-        video: this.state.video
-      });
-    }
-    else if (dictName === "donna") {
-      this.setState({ 
-        phrase: this.state.phrase,
-        dictionary: DonnaDictionary,
-        video: this.state.video
-      });   
-    }
-  },
-
   handlePhraseInput: function(words) {
 
     var oldPhrase = this.state.phrase;
@@ -36,7 +26,7 @@ var MashupContainer = React.createClass({
 
     for (var i=0; i < words.length; i++) {
       var word = words[i]
-      var entry = this.findInDictionary(this.props.dictionary, word);
+      var entry = this.findInDictionary(this.state.dictionary, word);
       if (!entry) {
         var undedfinedEntry = this.notInDictionary(this.state.dictionary, word);
         // clone or it will binds all undefined to final word used
@@ -45,21 +35,21 @@ var MashupContainer = React.createClass({
 
       newPhrase.push(entry);
     }
-    this.setState({ phrase: newPhrase, video: this.state.video });
+    this.setState({ phrase: newPhrase, video: this.state.video, dictionary: this.state.dictionary });
     var video = this.getVideo(words);
   },
 
   getVideo: function(words) {
     var text = words.join(" ");
     var that = this;
-    var dict = this.props.dictionary["dictionary"].toLowerCase();
-    var voice = this.props.dictionary["voice"].toLowerCase();
+    var dict = this.state.dictionary["dictionary"].toLowerCase();
+    var voice = this.state.dictionary["voice"].toLowerCase();
     $.get("https://upverse.com/app/dictionary/" + dict + "/" + text + "?voice=" + voice)
      .success(function(results) {
         console.log("COMPLETE");
         console.log(results);
        var video = "http://" + results["video"];
-       that.setState({ phrase: that.state.phrase, video: video });
+       that.setState({ phrase: that.state.phrase, video: video, dictionary: this.state.dictionary });
        console.log("video is " + video);
        console.log("state of video is " + that.state.video)
      });
@@ -85,48 +75,62 @@ var MashupContainer = React.createClass({
     this.refs.input.refs.textbox.handleInput();
   },
 
+  changeDictionary: function(newDict){
+    var that = this;
+    console.log("changing dictionary to " + newDict);
+
+    $.get('/assets/dictionaries/' + newDict + '.json', function(dict){
+      console.log("got it");
+      that.setState({ phrase: that.state.phrase, video: that.state.video, dictionary: dict });
+    });
+     
+  },
+
   render: function() {
     var entries = [];
     $("#initial-loader").hide();
-    var currentChar = this.props.dictionary["dictionary"];
-
-    return (
+    var currentDictionary = this.state.dictionary["dictionary"];
+    if (currentDictionary === "") {
+      return (
 
       <div id="crumbles">
        <header className="crumbles">
          <h1 id='crumbles-logo'>
            Crumbles
          </h1>
-         <div id='thirtylabs-logo'>
-            <p>created at</p>
-           <a href="http://thirtylabs.com" target="_blank">
-             <img src="/assets/30L.svg" />
-           </a>
-         </div>
-         <div id='dictionary-select'>
-           <div id='current-dictionary' className='dict-standard'>
-             <img src='/assets/down-arrow.png' />
-           </div>
-           <ul>
-             <li className='dict-standard'>Movie Clips</li>
-             <li className='dict-homer'>Homer Simpson</li>
-             <li className='dict-bp'>Bee & Puppycat</li>
-           </ul>
-         </div>
        </header>
-
-       <div id="word-list" className="dictionaryContainer">
-          <div id="dictionary">
-            <WordList dictionary={this.props.dictionary} onButtonClick={this.addWordFromList}/>
-          </div>
-        </div>
- 
-        <div id="mashup-container">
-             
-          <PhraseInput ref="input" entries={this.state.phrase} onInput={this.handlePhraseInput} />
-          <Player video={this.state.video} />
-        </div>
      </div>
-    );
+      )
+    } else {
+      return (
+
+        <div id="crumbles">
+         <header className="crumbles">
+           <h1 id='crumbles-logo'>
+             Crumbles
+           </h1>
+           <div id='thirtylabs-logo'>
+              <p>created at</p>
+             <a href="http://thirtylabs.com" target="_blank">
+               <img src="/assets/30L.svg" />
+             </a>
+           </div>
+           <DictionaryList selectedDictionary={this.changeDictionary} dictionary={currentDictionary} />
+        </header>
+
+         <div id="word-list" className="dictionaryContainer">
+            <div id="dictionary">
+              <WordList dictionary={this.state.dictionary} onButtonClick={this.addWordFromList}/>
+            </div>
+          </div>
+   
+          <div id="mashup-container">
+               
+            <PhraseInput ref="input" entries={this.state.phrase} onInput={this.handlePhraseInput} />
+            <Player video={this.state.video} />
+          </div>
+       </div>
+      );
+    }
   }
 });
