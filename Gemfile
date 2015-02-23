@@ -16,22 +16,6 @@ gem 'foreman'
 gem 'pry'
 gem 'racksh'
 
-# DB
-gem 'bcrypt'
-gem 'activerecord', '>= 3.1', :require => 'active_record'
-gem 'pg'
-gem 'aws-sdk-v1'
-gem 'aws-sdk', '2.0.6.pre'
-
-
-# Uploads
-gem 'panda', '~> 1.6.0'
-
-
-# HTTP
-gem 'httparty'
-gem 'mechanize'
-
 
 # Front End
 gem 'sass'
@@ -45,13 +29,6 @@ gem 'yui-compressor'
 
 # Helpers
 gem 'will_paginate'
-
-# Test requirements
-gem 'rspec', :group => 'test'
-gem 'rack-test', :require => 'rack/test', :group => 'test'
-gem 'factory_girl'
-gem 'database_cleaner', "~> 1.2.0"
-gem 'forgery'
 
 # Padrino Stable Gem
 gem 'padrino', '0.12.4'

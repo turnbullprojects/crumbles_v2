@@ -1,7 +1,0 @@
-%ul.nav.nav-tabs
-  %li=link_to tag_icon(:list, pat(:list)), url(:dictionaries, :index)
-  %li.active=link_to tag_icon(:plus, pat(:new)), url(:dictionaries, :new)
-
-.tabs-content
-  = form_for :dictionary, url(:dictionaries, :create), :class => 'form-horizontal' do |f|
-    =partial 'dictionaries/form', :locals => { :f => f }

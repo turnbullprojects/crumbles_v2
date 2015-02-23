@@ -40,11 +40,12 @@ var MashupContainer = React.createClass({
   },
 
   getVideo: function(words) {
+    var cineaste_url = "http://upverse.com";
     var text = words.join(" ");
     var that = this;
     var dict = this.state.dictionary["dictionary"].toLowerCase();
     var voice = this.state.dictionary["voice"].toLowerCase();
-    $.get("https://upverse.com/app/dictionary/" + dict + "/" + text + "?voice=" + voice)
+    $.get(cineaste_url + "/app/dictionary/" + dict + "/" + text + "?voice=" + voice)
      .success(function(results) {
         console.log("COMPLETE");
         console.log(results);

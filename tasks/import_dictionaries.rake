@@ -1,6 +1,6 @@
 require 'json'
-namespace :s3 do
-  task :update_dictionaries => :environment do
+namespace :import do
+  task :dictionaries => :environment do
     puts "Syncing with S3..."
     s3 = AWS::S3.new
     bucket = s3.buckets['crumbles-2015']
